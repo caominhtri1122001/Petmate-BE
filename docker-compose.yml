@@ -1,0 +1,22 @@
+version: '2.13'
+services:
+  petmate-db:
+    image: "postgres:14.3"
+    container_name: petmate-db-container
+    ports:
+      - "5432:5432"
+    networks:
+      - petmate-network
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=caominhtri
+      - POSTGRES_DB=petmate
+    volumes:
+      - petmate-data:/var/lib/postgresql/data
+
+volumes:
+  petmate-data:
+
+networks:
+  petmate-network:
+    driver: bridge

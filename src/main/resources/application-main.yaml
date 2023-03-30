@@ -1,0 +1,46 @@
+spring:
+  # Config connect DB
+  datasource:
+    url: 'jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}'
+    username: '${POSTGRES_USER}'
+    password: '${POSTGRES_PASSWORD}'
+    hikari:
+      schema: 'public'
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+  # Config flyway
+  flyway:
+    locations: classpath:/db/migration
+    fail-on-missing-locations: false
+    enabled: true
+  # Config spring security
+  security:
+    user:
+      password: caominhtri
+      name: caominhtri
+      roles: admin
+
+# Config swagger
+springdoc:
+  api-docs:
+    enabled: true
+    path: "/manage/api-docs"
+  swagger-ui:
+    enabled: true
+    path: "/manage/api-docs/swagger-ui.html"
+  show-actuator: false
+
+# Config application
+server:
+  port: ${SERVER_PORT}
+
+security:
+  unprotect: >
+    /internal/**,
+    /manage/**
