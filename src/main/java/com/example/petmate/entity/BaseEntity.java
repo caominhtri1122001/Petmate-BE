@@ -1,6 +1,5 @@
 package com.example.petmate.entity;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import nonapi.io.github.classgraph.json.Id;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
