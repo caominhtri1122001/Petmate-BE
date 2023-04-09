@@ -20,11 +20,12 @@ spring:
     default-schema: public
     schemas: public
   # Config spring security
-  security:
-    user:
-      password: caominhtri
-      name: caominhtri
-      roles: admin
+  mail:
+    host: smtp.gmail.com
+    username: caominhtri112201@gmail.com
+    password: naldykvxmitrtnpi
+    port: 587
+
 
 # Config swagger
 springdoc:
