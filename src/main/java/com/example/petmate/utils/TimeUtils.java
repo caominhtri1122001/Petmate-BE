@@ -7,7 +7,14 @@ public class TimeUtils {
 	private static final DateTimeFormatter ISO_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
 			.withZone(ZoneId.of("UTC"));
 
+	private static final DateTimeFormatter ISO_FORMATTER_HAS_MMS = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+			.withZone(ZoneId.of("UTC"));
+
 	private TimeUtils() {
+	}
+
+	public static long getNowTimes() {
+		return System.currentTimeMillis();
 	}
 
 	public static LocalDateTime convertToLocalDateTime(Long epochTime) {
@@ -16,6 +23,10 @@ public class TimeUtils {
 
 	public static LocalDateTime convertToLocalDateTime(String isoDateTime) {
 		return LocalDateTime.parse(isoDateTime, ISO_FORMATTER);
+	}
+
+	public static LocalDateTime converToLocalDateTimeNoIso(String dateTime) {
+		return LocalDateTime.parse(dateTime, ISO_FORMATTER_HAS_MMS);
 	}
 
 	public static OffsetDateTime convertToOffsetDateTimeISO(String localDateTimeWithOffset) {
