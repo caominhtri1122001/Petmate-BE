@@ -10,7 +10,10 @@ public enum ResponseCodes {
 	PM_ERROR_ACCOUNT_ALREADY_EXISTS("02", "Account already exists"),
 	PM_ERROR_LOGIN("03", "Invalid email or password"),
 	PM_ERROR_REGISTER("04", "Error when register"),
-	PM_ERROR_INTERNAL_SERVER("05", "Internal server error");
+	PM_ERROR_INTERNAL_SERVER("05", "Internal server error"),
+	PM_PARAMS_NULL("06", "Params is null"),
+
+	PM_NOT_FOUND("07", "Entity not found");
 	private String code;
 	private String message;
 

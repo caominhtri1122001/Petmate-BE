@@ -21,10 +21,10 @@ CREATE TABLE IF NOT EXISTS tags (
 
 CREATE TABLE IF NOT EXISTS categories (
     id UUID PRIMARY KEY default gen_random_uuid(),
-    postId UUID NOT NULL,
-    tagId UUID NOT NULL,
-    FOREIGN KEY (postId) REFERENCES posts(id),
-    FOREIGN KEY (tagId) REFERENCES tags(id),
+    post_id UUID NOT NULL,
+    tag_id UUID NOT NULL,
+    FOREIGN KEY (post_id) REFERENCES posts(id),
+    FOREIGN KEY (tag_id) REFERENCES tags(id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
