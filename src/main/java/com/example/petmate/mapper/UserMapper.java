@@ -8,7 +8,6 @@ import com.example.petmate.model.response.UserRegisterResponse;
 import com.example.petmate.utils.StringUtils;
 import com.example.petmate.utils.TimeUtils;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.stream.Collectors;
