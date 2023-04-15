@@ -8,6 +8,9 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.UUID;
 
@@ -24,4 +27,12 @@ public class Category extends BaseEntity {
 
 	@Column(name = "tag_id")
 	private UUID tagId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "post_id", nullable = false, updatable = false, insertable = false)
+	private Post post;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "tag_id", nullable = false, updatable = false, insertable = false)
+	private Tag tag;
 }

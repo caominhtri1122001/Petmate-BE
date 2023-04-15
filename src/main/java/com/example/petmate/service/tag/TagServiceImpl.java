@@ -35,10 +35,16 @@ public class TagServiceImpl implements TagService {
 	}
 
 	@Override
-	public boolean deleteTag(String tagId) {
-		if (Objects.isNull(tagId)) {
-			throw new ResponseException(ResponseCodes.PM_PARAMS_NULL);
+	public TagDto getTagById(String tagId) {
+		Optional<Tag> tag = tagRepository.findById(UUID.fromString(tagId));
+		if (tag.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
+		return TagMapper.toTagDto(tag.get());
+	}
+
+	@Override
+	public boolean deleteTag(String tagId) {
 		Optional<Tag> tag = tagRepository.findById(UUID.fromString(tagId));
 		if (tag.isPresent()) {
 			tagRepository.deleteById(UUID.fromString(tagId));

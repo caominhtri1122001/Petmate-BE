@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Slf4j
 @ControllerAdvice
-public class ReponseExceptionHandler {
-	private final Logger logger = LoggerFactory.getLogger(ReponseExceptionHandler.class);
+public class ResponseExceptionHandler {
+	private final Logger logger = LoggerFactory.getLogger(ResponseExceptionHandler.class);
 
 	@ExceptionHandler(ResponseException.class)
 	public ResponseEntity<ErrorResponse> handleResponseException(ResponseException e) {
@@ -27,4 +27,6 @@ public class ReponseExceptionHandler {
 		logger.error("Exception: {}", errorResponse, e);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
 	}
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.petmate.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,8 +8,13 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -29,14 +35,19 @@ public class Post extends BaseEntity {
 	private String image;
 
 	@Column(name = "views")
-	private Integer views;
+	private int views;
 
 	@Column(name = "comments")
-	private Integer comments;
+	private int comments;
 
 	@Column(name = "likes")
-	private Integer likes;
+	private int likes;
 
 	@Column(name = "author")
-	private UUID author;
+	private UUID userId;
+
+	@ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+	@JsonIgnoreProperties({ "id", "createdAt", "updatedAt", "password", "userImgUrl", "dateOfBirth" })
+	@JoinColumn(name = "author", insertable = false, updatable = false)
+	private User author;
 }

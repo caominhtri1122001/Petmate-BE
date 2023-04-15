@@ -2,8 +2,6 @@ package com.example.petmate.controller;
 
 import com.example.petmate.dto.TagDto;
 import com.example.petmate.exception.ResponseException;
-import com.example.petmate.model.request.UserRegisterRequest;
-import com.example.petmate.model.response.UserRegisterResponse;
 import com.example.petmate.service.tag.TagService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -38,8 +36,16 @@ public class TagController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to create tag", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TagDto.class)) }) })
 	@PostMapping
-	public ResponseEntity<TagDto> createTag(String name) throws ResponseException {
+	public ResponseEntity<TagDto> createTag(final String name) throws ResponseException {
 		return ResponseEntity.ok(tagService.createTag(name));
+	}
+
+	@Operation(summary = "api to get tag by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get tag by id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TagDto.class)) }) })
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<TagDto> getTagById(final String id) throws ResponseException {
+		return ResponseEntity.ok(tagService.getTagById(id));
 	}
 
 	@Operation(summary = "api to delete tag")

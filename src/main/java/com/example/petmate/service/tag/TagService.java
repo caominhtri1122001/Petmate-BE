@@ -9,5 +9,7 @@ public interface TagService {
 
 	TagDto createTag(String name);
 
+	TagDto getTagById(String tagId);
+
 	boolean deleteTag(String tagId);
 }
