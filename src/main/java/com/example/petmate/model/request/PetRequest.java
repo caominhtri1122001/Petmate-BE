@@ -1,4 +1,4 @@
-package com.example.petmate.model.response;
+package com.example.petmate.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,12 +11,18 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreatePetResponse {
+public class PetRequest {
     private String name;
+
     private String species;
+
     private String breed;
+
     private int age;
+
     private boolean gender;
+
     private int weight;
+
     private String owner;
 }

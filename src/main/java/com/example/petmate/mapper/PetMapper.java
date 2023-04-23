@@ -2,16 +2,16 @@ package com.example.petmate.mapper;
 
 import com.example.petmate.entity.Pet;
 import com.example.petmate.entity.User;
-import com.example.petmate.model.request.CreatePetRequest;
-import com.example.petmate.model.response.CreatePetResponse;
+import com.example.petmate.model.request.PetRequest;
+import com.example.petmate.model.response.PetResponse;
 import org.mapstruct.Mapper;
 
 import java.util.UUID;
 
 @Mapper
 public interface PetMapper {
-    static CreatePetResponse toPetResponse(Pet entity, User user) {
-        return CreatePetResponse.builder()
+    static PetResponse toPetResponse(Pet entity, User user) {
+        return PetResponse.builder()
                 .name(entity.getName())
                 .species(entity.getSpecies())
                 .breed(entity.getBreed())
@@ -22,15 +22,15 @@ public interface PetMapper {
                 .build();
     }
 
-    static Pet toPetEntity(CreatePetRequest createPetRequest) {
+    static Pet toPetEntity(PetRequest petRequest) {
         return Pet.builder()
-                .name(createPetRequest.getName())
-                .species(createPetRequest.getSpecies())
-                .breed(createPetRequest.getBreed())
-                .age(createPetRequest.getAge())
-                .gender(createPetRequest.isGender())
-                .weight(createPetRequest.getWeight())
-                .userId(UUID.fromString(createPetRequest.getOwner()))
+                .name(petRequest.getName())
+                .species(petRequest.getSpecies())
+                .breed(petRequest.getBreed())
+                .age(petRequest.getAge())
+                .gender(petRequest.isGender())
+                .weight(petRequest.getWeight())
+                .userId(UUID.fromString(petRequest.getOwner()))
                 .build();
     }
 }
