@@ -60,7 +60,7 @@ public class PostController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to find post by id", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
 	@GetMapping("/{id}")
-	public ResponseEntity<Post> updatePost(@PathVariable String id) throws ResponseException {
+	public ResponseEntity<Post> getPost(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(postService.getPostById(id));
 	}
 
