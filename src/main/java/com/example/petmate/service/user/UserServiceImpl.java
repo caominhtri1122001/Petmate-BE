@@ -1,19 +1,18 @@
 package com.example.petmate.service.user;
 
-import com.example.petmate.config.MailSenderConfig;
 import com.example.petmate.constant.ResponseCodes;
 import com.example.petmate.dto.UserDto;
 import com.example.petmate.entity.User;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.mapper.UserMapper;
-import com.example.petmate.model.request.ResetPasswordRequest;
-import com.example.petmate.model.request.UserLoginRequest;
-import com.example.petmate.model.request.UserRegisterRequest;
+import com.example.petmate.model.request.*;
+import com.example.petmate.model.response.AddEmployeeResponse;
 import com.example.petmate.model.response.UserLoginResponse;
 import com.example.petmate.model.response.UserRegisterResponse;
 import com.example.petmate.repository.UserRepository;
 import com.example.petmate.utils.JwtUtils;
 import com.example.petmate.utils.StringUtils;
+import com.example.petmate.utils.TimeUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -25,6 +24,8 @@ import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -57,6 +58,25 @@ public class UserServiceImpl implements UserService {
 		}
 		return UserMapper.toUserRegisterResponse(request);
 	}
+
+	@Override
+	public AddEmployeeResponse addEmployee(AddEmployeeRequest request) throws ResponseException {
+		log.info("Add Employee...");
+		try {
+			log.info(request.getLastName());
+			User existed = userRepository.findByEmail(request.getEmailAddress());
+			if (Objects.nonNull(existed)) {
+				throw new ResponseException(ResponseCodes.PM_ERROR_ACCOUNT_ALREADY_EXISTS);
+			}
+			userRepository.save(UserMapper.toEmployeeEntity(request));
+		} catch (ResponseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ResponseException(ResponseCodes.PM_ERROR_REGISTER, e.toString());
+		}
+		return UserMapper.toAddEmployeeResponse(request);
+	}
+
 
 	@Override
 	public UserLoginResponse userLogin(UserLoginRequest request) throws ResponseException {
@@ -115,6 +135,33 @@ public class UserServiceImpl implements UserService {
 			throw new ResponseException(ResponseCodes.PM_ERROR_INTERNAL_SERVER, e.toString());
 		}
 		return false;
+	}
+
+	@Override
+	public boolean updateEmployee(String id, UpdateEmployeeRequest request) throws ResponseException {
+		Optional<User> user = userRepository.findById(UUID.fromString(id));
+		if (user.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		user.get().setFirstName(request.getFirstName());
+		user.get().setLastName(request.getLastName());
+		user.get().setEmail(request.getEmailAddress());
+		user.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
+		userRepository.save(user.get());
+
+		return true;
+	}
+
+	@Override
+	public UserDto getEmployeeById(String id) {
+		Optional<User> user = userRepository.findById(UUID.fromString(id));
+
+		if (user.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		return UserMapper.toDto(user.get());
 	}
 
 	private void sendEmail(String email, String url, String firstName, String lastName) throws MessagingException,

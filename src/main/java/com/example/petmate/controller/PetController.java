@@ -65,6 +65,4 @@ public class PetController {
     public Boolean deletePet(@PathVariable String id) throws ResponseException {
         return petService.deletePet(id);
     }
-
-
 }

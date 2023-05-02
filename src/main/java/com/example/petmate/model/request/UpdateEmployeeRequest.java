@@ -1,4 +1,4 @@
-package com.example.petmate.dto;
+package com.example.petmate.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,17 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
-	private String firstName;
+public class UpdateEmployeeRequest {
 
-	private String lastName;
+    private String firstName;
 
-	private String emailAddress;
+    private String lastName;
 
-	private String dateOfBirth;
+    private String emailAddress;
+
+    private String dateOfBirth;
 }
