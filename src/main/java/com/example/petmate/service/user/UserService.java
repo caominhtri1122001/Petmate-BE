@@ -31,4 +31,10 @@ public interface UserService {
 	boolean deleteEmployee(String id);
 
 	List<UserDto> getAllCustomer();
+
+	UserDto getCustomerById(String id);
+
+	boolean updateCustomer(String id, UpdateCustomerRequest request) throws ResponseException;
+
+	boolean deleteCustomer(String id);
 }

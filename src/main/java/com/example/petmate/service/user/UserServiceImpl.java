@@ -191,6 +191,47 @@ public class UserServiceImpl implements UserService {
 		return UserMapper.toDtoList(customers);
 	}
 
+	@Override
+	public UserDto getCustomerById(String id) {
+		Optional<User> customer = userRepository.findById(UUID.fromString(id));
+
+		if ((customer.get().getRole() == UserRole.CUSTOMER) && customer.isPresent() ) {
+			return UserMapper.toDto(customer.get());
+		} else {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+	}
+
+	@Override
+	public boolean updateCustomer(String id, UpdateCustomerRequest request) throws ResponseException {
+		Optional<User> customer = userRepository.findById(UUID.fromString(id));
+
+		if ((customer.get().getRole() == UserRole.CUSTOMER) && customer.isPresent() ) {
+			customer.get().setFirstName(request.getFirstName());
+			customer.get().setLastName(request.getLastName());
+			customer.get().setEmail(request.getEmailAddress());
+			customer.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
+			userRepository.save(customer.get());
+		} else {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean deleteCustomer(String id) {
+		Optional<User> customer = userRepository.findById(UUID.fromString(id));
+
+		if ((customer.get().getRole() == UserRole.CUSTOMER) && customer.isPresent() ) {
+			userRepository.deleteById(UUID.fromString(id));
+		} else {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		return true;
+	}
+
 	private void sendEmail(String email, String url, String firstName, String lastName) throws MessagingException,
 			UnsupportedEncodingException {
 		MimeMessage message = javaMailSender.createMimeMessage();
