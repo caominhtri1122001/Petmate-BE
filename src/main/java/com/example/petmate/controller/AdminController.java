@@ -4,10 +4,7 @@ import com.example.petmate.dto.UserDto;
 import com.example.petmate.entity.Pet;
 import com.example.petmate.entity.User;
 import com.example.petmate.exception.ResponseException;
-import com.example.petmate.model.request.AddEmployeeRequest;
-import com.example.petmate.model.request.PetRequest;
-import com.example.petmate.model.request.UpdateEmployeeRequest;
-import com.example.petmate.model.request.UserRegisterRequest;
+import com.example.petmate.model.request.*;
 import com.example.petmate.model.response.AddEmployeeResponse;
 import com.example.petmate.model.response.UserRegisterResponse;
 import com.example.petmate.service.user.UserService;
@@ -47,11 +44,11 @@ public class AdminController {
         return userService.getAllEmployee();
     }
 
-    @Operation(summary = "api to update user for admin")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update user for admin", content = {
+    @Operation(summary = "api to update employee for admin")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update employee for admin", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateEmployeeRequest.class)) }) })
     @PatchMapping("/employee/{id}")
-    public Boolean updatePet(@PathVariable String id, UpdateEmployeeRequest request) throws ResponseException {
+    public Boolean updateEmployee(@PathVariable String id, UpdateEmployeeRequest request) throws ResponseException {
         return userService.updateEmployee(id, request);
     }
 
@@ -69,5 +66,37 @@ public class AdminController {
     @DeleteMapping("/employee/{id}")
     public Boolean deleteEmployee(@PathVariable String id) throws ResponseException {
         return userService.deleteEmployee(id);
+    }
+
+    @Operation(summary = "api to get all customer")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all customer", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+    @GetMapping("/customer")
+    public List<UserDto> getAllCustomer() throws ResponseException {
+        return userService.getAllCustomer();
+    }
+
+    @Operation(summary = "api to find customer by id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to find customer by id", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+    @GetMapping("/customer/{id}")
+    public UserDto getCustomer(@PathVariable String id) throws ResponseException {
+        return userService.getCustomerById(id);
+    }
+
+    @Operation(summary = "api to update customer for admin")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update customer for admin", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateCustomerRequest.class)) }) })
+    @PatchMapping("/customer/{id}")
+    public Boolean updateCustomer(@PathVariable String id, UpdateCustomerRequest request) throws ResponseException {
+        return userService.updateCustomer(id, request);
+    }
+
+    @Operation(summary = "api to delete customer")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to delete customer", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+    @DeleteMapping("/customer/{id}")
+    public Boolean deleteCustomer(@PathVariable String id) throws ResponseException {
+        return userService.deleteCustomer(id);
     }
 }
