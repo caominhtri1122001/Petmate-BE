@@ -29,4 +29,6 @@ public interface UserService {
 	List<UserDto> getAllEmployee();
 
 	boolean deleteEmployee(String id);
+
+	List<UserDto> getAllCustomer();
 }

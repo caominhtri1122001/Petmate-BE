@@ -185,6 +185,12 @@ public class UserServiceImpl implements UserService {
 		return true;
 	}
 
+	@Override
+	public List<UserDto> getAllCustomer() {
+		List<User> customers = userRepository.getAllCustomer();
+		return UserMapper.toDtoList(customers);
+	}
+
 	private void sendEmail(String email, String url, String firstName, String lastName) throws MessagingException,
 			UnsupportedEncodingException {
 		MimeMessage message = javaMailSender.createMimeMessage();

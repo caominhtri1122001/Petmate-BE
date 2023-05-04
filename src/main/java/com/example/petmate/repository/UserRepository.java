@@ -21,4 +21,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
             SELECT * FROM users WHERE user_role = 'EMPLOYEE'
             """)
 	List<User> getAllEmployee();
+
+	@Query(nativeQuery = true, value = """
+            SELECT * FROM users WHERE user_role = 'CUSTOMER'
+            """)
+	List<User> getAllCustomer();
 }

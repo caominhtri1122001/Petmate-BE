@@ -70,4 +70,12 @@ public class AdminController {
     public Boolean deleteEmployee(@PathVariable String id) throws ResponseException {
         return userService.deleteEmployee(id);
     }
+
+    @Operation(summary = "api to get all customer")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all customer", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+    @GetMapping("/customer")
+    public List<UserDto> getAllCustomer() throws ResponseException {
+        return userService.getAllCustomer();
+    }
 }
