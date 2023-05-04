@@ -25,4 +25,8 @@ public interface UserService {
 	boolean updateEmployee(String id, UpdateEmployeeRequest request) throws ResponseException;
 
 	UserDto getEmployeeById(String id);
+
+	List<UserDto> getAllEmployee();
+
+	boolean deleteEmployee(String id);
 }

@@ -20,6 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/admins")
 public class AdminController {
@@ -37,6 +39,14 @@ public class AdminController {
         return userService.addEmployee(addEmployeeRequest);
     }
 
+    @Operation(summary = "api to get all employee")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all employees", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+    @GetMapping("/employee")
+    public List<UserDto> getAllEmployee() throws ResponseException {
+        return userService.getAllEmployee();
+    }
+
     @Operation(summary = "api to update user for admin")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update user for admin", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateEmployeeRequest.class)) }) })
@@ -51,5 +61,13 @@ public class AdminController {
     @GetMapping("/employee/{id}")
     public UserDto getEmployee(@PathVariable String id) throws ResponseException {
         return userService.getEmployeeById(id);
+    }
+
+    @Operation(summary = "api to delete employee")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to delete employee", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+    @DeleteMapping("/employee/{id}")
+    public Boolean deleteEmployee(@PathVariable String id) throws ResponseException {
+        return userService.deleteEmployee(id);
     }
 }

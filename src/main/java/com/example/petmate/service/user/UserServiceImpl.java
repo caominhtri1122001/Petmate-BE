@@ -1,7 +1,9 @@
 package com.example.petmate.service.user;
 
 import com.example.petmate.constant.ResponseCodes;
+import com.example.petmate.constant.UserRole;
 import com.example.petmate.dto.UserDto;
+import com.example.petmate.entity.Pet;
 import com.example.petmate.entity.User;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.mapper.UserMapper;
@@ -162,6 +164,25 @@ public class UserServiceImpl implements UserService {
 		}
 
 		return UserMapper.toDto(user.get());
+	}
+
+	@Override
+	public List<UserDto> getAllEmployee() {
+		List<User> employees = userRepository.getAllEmployee();
+		return UserMapper.toDtoList(employees);
+	}
+
+	@Override
+	public boolean deleteEmployee(String id) {
+		Optional<User> employee = userRepository.findById(UUID.fromString(id));
+
+		if ((employee.get().getRole() == UserRole.EMPLOYEE) && employee.isPresent() ) {
+			userRepository.deleteById(UUID.fromString(id));
+		} else {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		return true;
 	}
 
 	private void sendEmail(String email, String url, String firstName, String lastName) throws MessagingException,
