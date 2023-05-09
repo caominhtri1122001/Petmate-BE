@@ -13,7 +13,10 @@ public enum ResponseCodes {
 	PM_ERROR_INTERNAL_SERVER("05", "Internal server error"),
 	PM_PARAMS_NULL("06", "Params is null"),
 
-	PM_NOT_FOUND("07", "Entity not found");
+	PM_NOT_FOUND("07", "Entity not found"),
+
+	RT_ERROR_VERIFY_FAIL("08", "Token verify failed !"),
+	RT_ERROR_SESSION_TIMEOUT("09", "Session timeout!");
 	private String code;
 	private String message;
 

@@ -8,15 +8,18 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/tags")
-public class TagController {
+public class TagController extends BaseController {
 
 	private final TagService tagService;
 
@@ -28,7 +31,9 @@ public class TagController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all tags", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TagDto.class)) }) })
 	@GetMapping
-	public ResponseEntity<List<TagDto>> getAllTags() throws ResponseException {
+	public ResponseEntity<List<TagDto>> getAllTags(HttpServletRequest request) throws ResponseException {
+		String userId = checkUser(request);
+		log.info(userId);
 		return ResponseEntity.ok(tagService.getAllTags());
 	}
 
@@ -51,7 +56,7 @@ public class TagController {
 	@Operation(summary = "api to delete tag")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to delete tag", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
-	@PostMapping(path = "/{id}")
+	@DeleteMapping(path = "/{id}")
 	public ResponseEntity<Boolean> deleteTag(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(tagService.deleteTag(id));
 	}
