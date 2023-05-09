@@ -46,6 +46,10 @@ server:
 #  level:
 #    root: debug
 
+# JWT
+jwt:
+  secret-key: '${SECRET_KEY}'
+
 security:
   unprotect: >
     /internal/**,
