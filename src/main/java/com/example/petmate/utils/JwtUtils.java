@@ -24,7 +24,6 @@ public class JwtUtils {
 	private static String secretKey = "my-secret";
 
 	public static String createJwt(String userId, String userRole) {
-		log.info(secretKey);
 		Date now = new Date();
 		long expiresInMinutes = 300;
 		Date expiration = new Date(now.getTime() + expiresInMinutes * 60000);

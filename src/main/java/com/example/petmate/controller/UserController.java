@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,16 +33,16 @@ public class UserController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to register account", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserRegisterRequest.class)) }) })
 	@PostMapping("/register")
-	public UserRegisterResponse userRegister(UserRegisterRequest registerRequest) throws ResponseException {
-		return userService.userRegister(registerRequest);
+	public ResponseEntity<UserRegisterResponse> userRegister(UserRegisterRequest registerRequest) throws ResponseException {
+		return ResponseEntity.ok(userService.userRegister(registerRequest));
 	}
 
 	@Operation(summary = "api to login account")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to login account", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserLoginRequest.class)) }) })
 	@PostMapping("/login")
-	public UserLoginResponse userLogin(UserLoginRequest loginRequest) throws ResponseException {
-		return userService.userLogin(loginRequest);
+	public ResponseEntity<UserLoginResponse> userLogin(@RequestBody UserLoginRequest loginRequest) throws ResponseException {
+		return ResponseEntity.ok(userService.userLogin(loginRequest));
 	}
 
 	@Operation(summary = "api to forgot password")

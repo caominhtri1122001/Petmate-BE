@@ -13,6 +13,9 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class UserLoginResponse {
 	private String userId;
+	private String name;
 	private String email;
+	private String role;
+	private String image;
 	private String jwt;
 }

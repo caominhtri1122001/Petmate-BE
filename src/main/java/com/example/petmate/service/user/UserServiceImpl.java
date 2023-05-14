@@ -94,7 +94,10 @@ public class UserServiceImpl implements UserService {
 				throw new ResponseException(ResponseCodes.PM_ERROR_LOGIN);
 			}
 			response.setUserId(entity.getId().toString());
+			response.setName(entity.getFirstName());
 			response.setEmail(entity.getEmail());
+			response.setRole(entity.getRole().toString());
+			response.setImage(entity.getUserImgUrl());
 			response.setJwt(JwtUtils.createJwt(entity.getId().toString(), entity.getRole().toString()));
 		} catch (ResponseException e) {
 			throw e;
