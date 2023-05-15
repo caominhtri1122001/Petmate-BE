@@ -16,7 +16,13 @@ public class UserDto {
 
 	private String lastName;
 
+	private String image;
+
 	private String role;
+
+	private boolean gender;
+
+	private String phone;
 
 	private String emailAddress;
 

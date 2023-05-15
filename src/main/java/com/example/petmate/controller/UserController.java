@@ -60,4 +60,12 @@ public class UserController {
 	public List<UserDto> getAllUser() throws ResponseException {
 		return userService.getAllUsers();
 	}
+
+	@Operation(summary = "api to get user by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get user by id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserDto.class)) }) })
+	@GetMapping("/{id}")
+	public ResponseEntity<UserDto> getUserById(@PathVariable String id) throws ResponseException {
+		return ResponseEntity.ok(userService.getUserById(id));
+	}
 }

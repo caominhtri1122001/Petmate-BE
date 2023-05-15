@@ -68,6 +68,9 @@ public interface UserMapper {
 				.lastName(user.getLastName())
 				.firstName(user.getFirstName())
 				.emailAddress(user.getEmail())
+				.image(user.getUserImgUrl())
+				.gender(user.isGender())
+				.phone(user.getPhone())
 				.role(user.getRole().toString())
 				.dateOfBirth(TimeUtils.convertToIsoString(user.getDateOfBirth()))
 				.build();

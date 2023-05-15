@@ -16,7 +16,9 @@ public enum ResponseCodes {
 	PM_NOT_FOUND("07", "Entity not found"),
 
 	RT_ERROR_VERIFY_FAIL("08", "Token verify failed !"),
-	RT_ERROR_SESSION_TIMEOUT("09", "Session timeout!");
+	RT_ERROR_SESSION_TIMEOUT("09", "Session timeout!"),
+
+	RT_ERROR_ALREADY_REQUESTED("10", "We already have your request!");
 	private String code;
 	private String message;
 

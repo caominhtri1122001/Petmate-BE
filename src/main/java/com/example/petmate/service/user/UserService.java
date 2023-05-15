@@ -18,6 +18,8 @@ public interface UserService {
 	UserLoginResponse userLogin(UserLoginRequest request) throws ResponseException;
 	List<UserDto> getAllUsers();
 
+	UserDto getUserById(String id);
+
 	void forgotPassword(String email) throws ResponseException;
 
 	boolean resetPassword(ResetPasswordRequest request) throws ResponseException;

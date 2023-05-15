@@ -114,6 +114,17 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public UserDto getUserById(String id) {
+		Optional<User> user = userRepository.findById(UUID.fromString(id));
+
+		if (user.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		return UserMapper.toDto(user.get());
+	}
+
+	@Override
 	public void forgotPassword(String email) throws ResponseException {
 		log.info("forgotPassword...");
 		try {
