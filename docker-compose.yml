@@ -9,7 +9,7 @@ services:
       - petmate-network
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=caominhtri
+      - POSTGRES_PASSWORD=secret
       - POSTGRES_DB=petmate
     volumes:
       - petmate-data:/var/lib/postgresql/data

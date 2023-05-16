@@ -1,9 +1,9 @@
 spring:
   # Config connect DB
   datasource:
-    url: 'jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}'
-    username: '${POSTGRES_USER}'
-    password: '${POSTGRES_PASSWORD}'
+    url: 'jdbc:postgresql://localhost:5432/petmate'
+    username: 'postgres'
+    password: 'secret'
   jpa:
     properties:
       hibernate:
@@ -19,7 +19,7 @@ spring:
     enabled: true
     default-schema: public
     schemas: public
-  # Config spring mail
+  # Config spring security
   mail:
     host: smtp.gmail.com
     username: caominhtri112201@gmail.com
@@ -45,10 +45,6 @@ server:
 #logging:
 #  level:
 #    root: debug
-
-# JWT
-jwt:
-  secret-key: '${SECRET_KEY}'
 
 security:
   unprotect: >

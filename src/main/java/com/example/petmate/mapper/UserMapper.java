@@ -65,6 +65,7 @@ public interface UserMapper {
 
 	static UserDto toDto(User user) {
 		return UserDto.builder()
+				.id(user.getId().toString())
 				.lastName(user.getLastName())
 				.firstName(user.getFirstName())
 				.emailAddress(user.getEmail())
