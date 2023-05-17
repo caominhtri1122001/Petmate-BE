@@ -6,17 +6,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostRequest {
-	private String title;
-	private String content;
-	private String image;
-	private String author;
-	private List<String> tags;
+public class SitterRequest {
+	private String address;
+	private String district;
+	private String city;
+	private int yearOfExperience;
+	private String description;
+	private String userId;
 }

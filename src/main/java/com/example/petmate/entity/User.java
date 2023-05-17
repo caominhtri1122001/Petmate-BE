@@ -40,4 +40,10 @@ public class User extends BaseEntity {
 
 	@Column(name = "user_img_url")
 	private String userImgUrl;
+
+	@Column(name = "gender")
+	private boolean gender;
+
+	@Column(name = "phone")
+	private String phone;
 }

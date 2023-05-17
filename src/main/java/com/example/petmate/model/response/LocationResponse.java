@@ -1,4 +1,4 @@
-package com.example.petmate.model.request;
+package com.example.petmate.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -6,17 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Getter
 @Setter
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostRequest {
-	private String title;
-	private String content;
-	private String image;
-	private String author;
-	private List<String> tags;
+public class LocationResponse {
+	private String address;
+	private String latitude;
+	private String longitude;
 }

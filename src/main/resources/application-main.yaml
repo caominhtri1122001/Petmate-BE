@@ -26,6 +26,14 @@ spring:
     password: naldykvxmitrtnpi
     port: 587
 
+# LocationIQ
+locationiq:
+  base-url: ${LOCATIONIQ_URL}
+  get-location: ${locationiq.base-url}?key=${LOCATIONIQ_KEY}&q={encodedAddress}&format=json
+
+# Geloky
+geloky:
+  get-location: https://geloky.com/api/geo/geocode?address={encodedAddress}&key=${GELOKY_KEY}&format=geloky
 
 # Config swagger
 springdoc:

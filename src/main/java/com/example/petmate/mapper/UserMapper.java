@@ -65,9 +65,13 @@ public interface UserMapper {
 
 	static UserDto toDto(User user) {
 		return UserDto.builder()
+				.id(user.getId().toString())
 				.lastName(user.getLastName())
 				.firstName(user.getFirstName())
 				.emailAddress(user.getEmail())
+				.image(user.getUserImgUrl())
+				.gender(user.isGender())
+				.phone(user.getPhone())
 				.role(user.getRole().toString())
 				.dateOfBirth(TimeUtils.convertToIsoString(user.getDateOfBirth()))
 				.build();

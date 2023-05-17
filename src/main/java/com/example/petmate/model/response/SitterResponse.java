@@ -1,4 +1,4 @@
-package com.example.petmate.dto;
+package com.example.petmate.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,22 +11,16 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserDto {
-	private String id;
-
-	private String firstName;
-
+public class SitterResponse {
+	private String requestId;
+	private String userId;
+	private String firstname;
 	private String lastName;
-
-	private String image;
-
-	private String role;
-
 	private boolean gender;
-
-	private String phone;
-
-	private String emailAddress;
-
 	private String dateOfBirth;
+	private String phone;
+	private String address;
+	private int yearOfExperience;
+	private boolean status;
+	private String description;
 }
