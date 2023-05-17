@@ -26,17 +26,17 @@ public class Sitter extends BaseEntity{
 	@Column(name = "address")
 	private String address;
 
-	@Column(name = "city")
-	private String city;
-
-	@Column(name = "postcode")
-	private String postcode;
-
 	@Column(name = "yearofexperience")
 	private int yearOfExperience;
 
 	@Column(name = "description")
 	private String description;
+
+	@Column(name = "latitude")
+	private float latitude;
+
+	@Column(name = "longitude")
+	private float longitude;
 
 	@Column(name = "status")
 	private boolean status;

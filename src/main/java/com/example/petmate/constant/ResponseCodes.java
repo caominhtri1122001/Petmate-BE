@@ -18,7 +18,9 @@ public enum ResponseCodes {
 	RT_ERROR_VERIFY_FAIL("08", "Token verify failed !"),
 	RT_ERROR_SESSION_TIMEOUT("09", "Session timeout!"),
 
-	RT_ERROR_ALREADY_REQUESTED("10", "We already have your request!");
+	RT_ERROR_ALREADY_REQUESTED("10", "We already have your request!"),
+
+	RT_ERROR_WRONG_ADDRESS("11", "Your address may be not exsits!");
 	private String code;
 	private String message;
 

@@ -20,8 +20,6 @@ public class SitterResponse {
 	private String dateOfBirth;
 	private String phone;
 	private String address;
-	private String city;
-	private String postCode;
 	private int yearOfExperience;
 	private boolean status;
 	private String description;

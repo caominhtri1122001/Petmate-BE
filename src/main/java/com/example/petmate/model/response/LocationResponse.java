@@ -1,4 +1,4 @@
-package com.example.petmate.model.request;
+package com.example.petmate.model.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,11 +11,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class SitterRequest {
+public class LocationResponse {
 	private String address;
-	private String district;
-	private String city;
-	private int yearOfExperience;
-	private String description;
-	private String userId;
+	private String latitude;
+	private String longitude;
 }
