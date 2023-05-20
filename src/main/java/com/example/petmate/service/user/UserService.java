@@ -11,7 +11,7 @@ import com.example.petmate.model.response.UserRegisterResponse;
 import java.util.List;
 
 public interface UserService {
-	UserRegisterResponse userRegister(UserRegisterRequest request) throws ResponseException;
+	UserLoginResponse userRegister(UserRegisterRequest request) throws ResponseException;
 
 	AddEmployeeResponse addEmployee(AddEmployeeRequest request) throws ResponseException;
 

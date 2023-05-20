@@ -44,6 +44,8 @@ public interface UserMapper {
 						userRegisterRequest.getEmailAddress()))
 				.dateOfBirth(TimeUtils.converToLocalDateTimeNoIso(userRegisterRequest.getDateOfBirth()))
 				.role(UserRole.CUSTOMER)
+				.gender(userRegisterRequest.isGender())
+				.phone(userRegisterRequest.getPhone())
 				.build();
 	}
 

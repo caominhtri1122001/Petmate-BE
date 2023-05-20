@@ -23,4 +23,8 @@ public class UserRegisterRequest {
 	private String password;
 
 	private String dateOfBirth;
+
+	private boolean gender;
+
+	private String phone;
 }

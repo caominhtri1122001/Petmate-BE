@@ -33,7 +33,7 @@ public class UserController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to register account", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserRegisterRequest.class)) }) })
 	@PostMapping("/register")
-	public ResponseEntity<UserRegisterResponse> userRegister(UserRegisterRequest registerRequest) throws ResponseException {
+	public ResponseEntity<UserLoginResponse> userRegister(@RequestBody UserRegisterRequest registerRequest) throws ResponseException {
 		return ResponseEntity.ok(userService.userRegister(registerRequest));
 	}
 
