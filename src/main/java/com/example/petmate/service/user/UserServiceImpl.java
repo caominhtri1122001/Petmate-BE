@@ -6,13 +6,8 @@ import com.example.petmate.dto.UserDto;
 import com.example.petmate.entity.User;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.mapper.UserMapper;
-import com.example.petmate.model.request.AddEmployeeRequest;
-import com.example.petmate.model.request.ResetPasswordRequest;
-import com.example.petmate.model.request.UpdateCustomerRequest;
-import com.example.petmate.model.request.UpdateEmployeeRequest;
-import com.example.petmate.model.request.UserLoginRequest;
-import com.example.petmate.model.request.UserRegisterRequest;
-import com.example.petmate.model.response.AddEmployeeResponse;
+import com.example.petmate.model.request.*;
+import com.example.petmate.model.response.AddAdminResponse;
 import com.example.petmate.model.response.UserLoginResponse;
 import com.example.petmate.repository.UserRepository;
 import com.example.petmate.utils.JwtUtils;
@@ -73,21 +68,53 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public AddEmployeeResponse addEmployee(AddEmployeeRequest request) throws ResponseException {
-		log.info("Add Employee...");
+	public AddAdminResponse addAdmin(AddAdminRequest request) throws ResponseException {
+		log.info("Add Admin...");
 		try {
 			log.info(request.getLastName());
 			User existed = userRepository.findByEmail(request.getEmailAddress());
 			if (Objects.nonNull(existed)) {
 				throw new ResponseException(ResponseCodes.PM_ERROR_ACCOUNT_ALREADY_EXISTS);
 			}
-			userRepository.save(UserMapper.toEmployeeEntity(request));
+			userRepository.save(UserMapper.toAdminEntity(request));
 		} catch (ResponseException e) {
 			throw e;
 		} catch (Exception e) {
 			throw new ResponseException(ResponseCodes.PM_ERROR_REGISTER, e.toString());
 		}
-		return UserMapper.toAddEmployeeResponse(request);
+		return UserMapper.toAddAdminResponse(request);
+	}
+
+	@Override
+	public boolean updateAdmin(String id, UpdateAdminRequest request) throws ResponseException {
+		Optional<User> admin = userRepository.findById(UUID.fromString(id));
+
+		if ((admin.get().getRole() == UserRole.ADMIN) && admin.isPresent()) {
+			admin.get().setFirstName(request.getFirstName());
+			admin.get().setLastName(request.getLastName());
+			admin.get().setEmail(request.getEmailAddress());
+			admin.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
+			admin.get().setGender(request.isGender());
+			admin.get().setPhone(request.getPhone());
+			userRepository.save(admin.get());
+		} else {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		return true;
+	}
+
+	@Override
+	public boolean deleteAdmin(String id) {
+		Optional<User> admin = userRepository.findById(UUID.fromString(id));
+
+		if ((admin.get().getRole() == UserRole.ADMIN) && admin.isPresent()) {
+			userRepository.deleteById(UUID.fromString(id));
+		} else {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		return true;
 	}
 
 	@Override
@@ -166,6 +193,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean updateEmployee(String id, UpdateEmployeeRequest request) throws ResponseException {
 		Optional<User> user = userRepository.findById(UUID.fromString(id));
+		log.info(request.getFirstName());
 		if (user.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
@@ -174,6 +202,8 @@ public class UserServiceImpl implements UserService {
 		user.get().setLastName(request.getLastName());
 		user.get().setEmail(request.getEmailAddress());
 		user.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
+		user.get().setGender(request.isGender());
+		user.get().setPhone(request.getPhone());
 		userRepository.save(user.get());
 
 		return true;
@@ -235,6 +265,8 @@ public class UserServiceImpl implements UserService {
 			customer.get().setLastName(request.getLastName());
 			customer.get().setEmail(request.getEmailAddress());
 			customer.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
+			customer.get().setGender(request.isGender());
+			customer.get().setPhone(request.getPhone());
 			userRepository.save(customer.get());
 		} else {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
@@ -253,6 +285,16 @@ public class UserServiceImpl implements UserService {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
 
+		return true;
+	}
+
+	@Override
+	public boolean resetPasswordToDefault(String id) {
+		Optional<User> account = userRepository.findById(UUID.fromString(id));
+
+		account.get().setPassword(StringUtils.getShaStringWithSalt("123456",
+				account.get().getEmail()));
+		userRepository.save(account.get());
 		return true;
 	}
 

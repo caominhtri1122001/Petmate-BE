@@ -1,19 +1,21 @@
 package com.example.petmate.service.user;
 
 import com.example.petmate.dto.UserDto;
-import com.example.petmate.entity.User;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.model.request.*;
-import com.example.petmate.model.response.AddEmployeeResponse;
+import com.example.petmate.model.response.AddAdminResponse;
 import com.example.petmate.model.response.UserLoginResponse;
-import com.example.petmate.model.response.UserRegisterResponse;
 
 import java.util.List;
 
 public interface UserService {
 	UserLoginResponse userRegister(UserRegisterRequest request) throws ResponseException;
 
-	AddEmployeeResponse addEmployee(AddEmployeeRequest request) throws ResponseException;
+	AddAdminResponse addAdmin(AddAdminRequest request) throws ResponseException;
+
+	boolean updateAdmin(String id, UpdateAdminRequest request) throws ResponseException;
+
+	boolean deleteAdmin(String id);
 
 	UserLoginResponse userLogin(UserLoginRequest request) throws ResponseException;
 	List<UserDto> getAllUsers();
@@ -39,4 +41,6 @@ public interface UserService {
 	boolean updateCustomer(String id, UpdateCustomerRequest request) throws ResponseException;
 
 	boolean deleteCustomer(String id);
+
+	boolean resetPasswordToDefault(String id);
 }

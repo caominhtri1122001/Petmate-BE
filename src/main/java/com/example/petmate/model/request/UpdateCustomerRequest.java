@@ -19,4 +19,8 @@ public class UpdateCustomerRequest {
     private String emailAddress;
 
     private String dateOfBirth;
+
+    private boolean gender;
+
+    private String phone;
 }
