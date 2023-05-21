@@ -1,12 +1,9 @@
 package com.example.petmate.controller;
 
 import com.example.petmate.dto.UserDto;
-import com.example.petmate.entity.Pet;
-import com.example.petmate.entity.User;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.model.request.*;
-import com.example.petmate.model.response.AddEmployeeResponse;
-import com.example.petmate.model.response.UserRegisterResponse;
+import com.example.petmate.model.response.AddAdminResponse;
 import com.example.petmate.service.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,12 +24,28 @@ public class AdminController {
         this.userService = userService;
     }
 
-    @Operation(summary = "api to add employee")
-    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to add employee", content = {
-            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AddEmployeeRequest.class)) }) })
-    @PostMapping("/employee")
-    public AddEmployeeResponse addEmployee(AddEmployeeRequest addEmployeeRequest) throws ResponseException {
-        return userService.addEmployee(addEmployeeRequest);
+    @Operation(summary = "api to add admin")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to add admin", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = AddAdminRequest.class)) }) })
+    @PostMapping("")
+    public AddAdminResponse addAdmin(@RequestBody AddAdminRequest addAdminRequest) throws ResponseException {
+        return userService.addAdmin(addAdminRequest);
+    }
+
+    @Operation(summary = "api to update admin")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update admin", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateEmployeeRequest.class)) }) })
+    @PatchMapping("/{id}")
+    public Boolean updateAdmin(@PathVariable String id,@RequestBody UpdateAdminRequest request) throws ResponseException {
+        return userService.updateAdmin(id, request);
+    }
+
+    @Operation(summary = "api to delete admin")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to delete admin", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+    @DeleteMapping("/{id}")
+    public Boolean deleteAdmin(@PathVariable String id) throws ResponseException {
+        return userService.deleteAdmin(id);
     }
 
     @Operation(summary = "api to get all employee")
@@ -48,7 +60,7 @@ public class AdminController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update employee for admin", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateEmployeeRequest.class)) }) })
     @PatchMapping("/employee/{id}")
-    public Boolean updateEmployee(@PathVariable String id, UpdateEmployeeRequest request) throws ResponseException {
+    public Boolean updateEmployee(@PathVariable String id,@RequestBody UpdateEmployeeRequest request) throws ResponseException {
         return userService.updateEmployee(id, request);
     }
 
@@ -88,7 +100,7 @@ public class AdminController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update customer for admin", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateCustomerRequest.class)) }) })
     @PatchMapping("/customer/{id}")
-    public Boolean updateCustomer(@PathVariable String id, UpdateCustomerRequest request) throws ResponseException {
+    public Boolean updateCustomer(@PathVariable String id,@RequestBody UpdateCustomerRequest request) throws ResponseException {
         return userService.updateCustomer(id, request);
     }
 
@@ -98,5 +110,13 @@ public class AdminController {
     @DeleteMapping("/customer/{id}")
     public Boolean deleteCustomer(@PathVariable String id) throws ResponseException {
         return userService.deleteCustomer(id);
+    }
+
+    @Operation(summary = "api to reset password account to default by id")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to reset password account to default by id", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UserDto.class)) }) })
+    @GetMapping("/reset-password/{id}")
+    public Boolean resetUserPasswordById(@PathVariable String id) throws ResponseException {
+        return userService.resetPasswordToDefault(id);
     }
 }

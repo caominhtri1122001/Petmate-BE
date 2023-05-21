@@ -1,6 +1,7 @@
 package com.example.petmate.service.sitter;
 
 import com.example.petmate.constant.ResponseCodes;
+import com.example.petmate.constant.UserRole;
 import com.example.petmate.entity.Sitter;
 import com.example.petmate.entity.User;
 import com.example.petmate.exception.ResponseException;
@@ -47,6 +48,8 @@ public class SitterServiceImpl implements SitterService {
 			throw new ResponseException(ResponseCodes.RT_ERROR_WRONG_ADDRESS);
 		}
 		Optional<User> user = userRepository.findById(UUID.fromString(request.getUserId()));
+		user.get().setRole(UserRole.EMPLOYEE);
+		userRepository.save(user.get());
 		return SitterMapper.toResponse(sitterRepository.save(SitterMapper.toEntity(request,result)), user.get());
 	}
 }

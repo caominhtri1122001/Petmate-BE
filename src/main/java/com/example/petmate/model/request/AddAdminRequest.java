@@ -1,4 +1,4 @@
-package com.example.petmate.model.response;
+package com.example.petmate.model.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,12 +11,18 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddEmployeeResponse {
+public class AddAdminRequest {
     private String firstName;
 
     private String lastName;
 
     private String emailAddress;
 
+    private String password;
+
     private String dateOfBirth;
+
+    private boolean gender;
+
+    private String phone;
 }

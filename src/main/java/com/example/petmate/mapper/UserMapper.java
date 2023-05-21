@@ -3,9 +3,9 @@ package com.example.petmate.mapper;
 import com.example.petmate.constant.UserRole;
 import com.example.petmate.dto.UserDto;
 import com.example.petmate.entity.User;
-import com.example.petmate.model.request.AddEmployeeRequest;
+import com.example.petmate.model.request.AddAdminRequest;
 import com.example.petmate.model.request.UserRegisterRequest;
-import com.example.petmate.model.response.AddEmployeeResponse;
+import com.example.petmate.model.response.AddAdminResponse;
 import com.example.petmate.model.response.UserRegisterResponse;
 import com.example.petmate.utils.StringUtils;
 import com.example.petmate.utils.TimeUtils;
@@ -26,12 +26,14 @@ public interface UserMapper {
 				.build();
 	}
 
-	static AddEmployeeResponse toAddEmployeeResponse(AddEmployeeRequest addEmployeeRequest) {
-		return AddEmployeeResponse.builder()
-				.firstName(addEmployeeRequest.getFirstName())
-				.lastName(addEmployeeRequest.getLastName())
-				.emailAddress(addEmployeeRequest.getEmailAddress())
-				.dateOfBirth(addEmployeeRequest.getDateOfBirth())
+	static AddAdminResponse toAddAdminResponse(AddAdminRequest addAdminRequest) {
+		return AddAdminResponse.builder()
+				.firstName(addAdminRequest.getFirstName())
+				.lastName(addAdminRequest.getLastName())
+				.emailAddress(addAdminRequest.getEmailAddress())
+				.dateOfBirth(addAdminRequest.getDateOfBirth())
+				.gender(addAdminRequest.isGender())
+				.phone(addAdminRequest.getPhone())
 				.build();
 	}
 
@@ -49,15 +51,17 @@ public interface UserMapper {
 				.build();
 	}
 
-	static User toEmployeeEntity(AddEmployeeRequest addEmployeeRequest) {
+	static User toAdminEntity(AddAdminRequest addAdminRequest) {
 		return User.builder()
-				.firstName(addEmployeeRequest.getFirstName())
-				.lastName(addEmployeeRequest.getLastName())
-				.email(addEmployeeRequest.getEmailAddress())
-				.password(StringUtils.getShaStringWithSalt(addEmployeeRequest.getPassword(),
-						addEmployeeRequest.getEmailAddress()))
-				.dateOfBirth(TimeUtils.converToLocalDateTimeNoIso(addEmployeeRequest.getDateOfBirth()))
-				.role(UserRole.EMPLOYEE)
+				.firstName(addAdminRequest.getFirstName())
+				.lastName(addAdminRequest.getLastName())
+				.email(addAdminRequest.getEmailAddress())
+				.password(StringUtils.getShaStringWithSalt(addAdminRequest.getPassword(),
+						addAdminRequest.getEmailAddress()))
+				.dateOfBirth(TimeUtils.converToLocalDateTimeNoIso(addAdminRequest.getDateOfBirth()))
+				.role(UserRole.ADMIN)
+				.phone(addAdminRequest.getPhone())
+				.gender(addAdminRequest.isGender())
 				.build();
 	}
 
