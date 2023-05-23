@@ -4,6 +4,7 @@ import com.example.petmate.entity.Sitter;
 import com.example.petmate.entity.User;
 import com.example.petmate.model.request.SitterRequest;
 import com.example.petmate.model.response.LocationResponse;
+import com.example.petmate.model.response.SitterInfoResponse;
 import com.example.petmate.model.response.SitterResponse;
 import org.mapstruct.Mapper;
 
@@ -20,6 +21,21 @@ public interface SitterMapper {
 				.yearOfExperience(request.getYearOfExperience())
 				.description(request.getDescription())
 				.userId(UUID.fromString(request.getUserId()))
+				.build();
+	}
+
+	static SitterInfoResponse toSitterInfoResponse(Sitter entity, User userEntity) {
+		return SitterInfoResponse.builder()
+				.userId(entity.getUserId().toString())
+				.firstname(userEntity.getFirstName())
+				.lastName(userEntity.getLastName())
+				.userImage(userEntity.getUserImgUrl())
+				.phone(userEntity.getPhone())
+				.address(entity.getAddress())
+				.latitude(entity.getLatitude())
+				.longitude(entity.getLongitude())
+				.yearOfExperience(entity.getYearOfExperience())
+				.description(entity.getDescription())
 				.build();
 	}
 

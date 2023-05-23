@@ -33,10 +33,10 @@ public class Sitter extends BaseEntity{
 	private String description;
 
 	@Column(name = "latitude")
-	private float latitude;
+	private double latitude;
 
 	@Column(name = "longitude")
-	private float longitude;
+	private double longitude;
 
 	@Column(name = "status")
 	private boolean status;

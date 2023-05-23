@@ -54,4 +54,14 @@ public class TimeUtils {
 		}
 		return ISO_FORMATTER.format(dateTime);
 	}
+
+	public static LocalDate convertStringToDate(String date) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		return LocalDate.parse(date, formatter);
+	}
+
+	public static LocalTime convertStringToTime(String time) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+		return LocalTime.parse(time, formatter);
+	}
 }

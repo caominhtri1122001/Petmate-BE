@@ -4,6 +4,7 @@ import com.example.petmate.entity.Sitter;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.model.request.SitterRequest;
 import com.example.petmate.model.response.LocationResponse;
+import com.example.petmate.model.response.SitterInfoResponse;
 import com.example.petmate.model.response.SitterResponse;
 import com.example.petmate.service.sitter.SitterService;
 import com.example.petmate.service.third_party.locationIQ.LocationIqService;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/sitter")
@@ -49,5 +51,13 @@ public class SitterController {
 	@GetMapping("/getLocation")
 	public LocationResponse getLocation(String address) throws ResponseException {
 		return locationIqService.getTheLocation(address);
+	}
+
+	@Operation(summary = "api to get sitter around user")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get sitter around user", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SitterInfoResponse.class)) }) })
+	@GetMapping("/getSitter")
+	public ResponseEntity<List<SitterInfoResponse>> getSitterAround() throws ResponseException {
+		return ResponseEntity.ok(sitterService.getListSitter());
 	}
 }

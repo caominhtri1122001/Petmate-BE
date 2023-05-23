@@ -8,6 +8,7 @@ import com.example.petmate.exception.ResponseException;
 import com.example.petmate.mapper.SitterMapper;
 import com.example.petmate.model.request.SitterRequest;
 import com.example.petmate.model.response.LocationResponse;
+import com.example.petmate.model.response.SitterInfoResponse;
 import com.example.petmate.model.response.SitterResponse;
 import com.example.petmate.repository.SitterRepository;
 import com.example.petmate.repository.UserRepository;
@@ -15,9 +16,12 @@ import com.example.petmate.service.third_party.locationIQ.LocationIqService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -51,5 +55,16 @@ public class SitterServiceImpl implements SitterService {
 		user.get().setRole(UserRole.EMPLOYEE);
 		userRepository.save(user.get());
 		return SitterMapper.toResponse(sitterRepository.save(SitterMapper.toEntity(request,result)), user.get());
+	}
+
+	@Override
+	public List<SitterInfoResponse> getListSitter() {
+		List<SitterInfoResponse> result = new ArrayList<>();
+		List<Sitter> sitters = sitterRepository.findAll();
+		sitters.forEach(sitter -> {
+			Optional<User> user = userRepository.findById(sitter.getUserId());
+			result.add(SitterMapper.toSitterInfoResponse(sitter, user.get()));
+		});
+		return result;
 	}
 }
