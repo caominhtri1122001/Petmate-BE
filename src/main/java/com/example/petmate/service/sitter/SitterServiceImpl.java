@@ -52,8 +52,6 @@ public class SitterServiceImpl implements SitterService {
 			throw new ResponseException(ResponseCodes.RT_ERROR_WRONG_ADDRESS);
 		}
 		Optional<User> user = userRepository.findById(UUID.fromString(request.getUserId()));
-		user.get().setRole(UserRole.EMPLOYEE);
-		userRepository.save(user.get());
 		return SitterMapper.toResponse(sitterRepository.save(SitterMapper.toEntity(request,result)), user.get());
 	}
 
@@ -66,5 +64,42 @@ public class SitterServiceImpl implements SitterService {
 			result.add(SitterMapper.toSitterInfoResponse(sitter, user.get()));
 		});
 		return result;
+	}
+
+	@Override
+	public List<SitterInfoResponse> getListSitterRequest() {
+		List<SitterInfoResponse> result = new ArrayList<>();
+		List<Sitter> sitters = sitterRepository.findByStatus(false);
+		sitters.forEach(sitter -> {
+			Optional<User> user = userRepository.findById(sitter.getUserId());
+			result.add(SitterMapper.toSitterInfoResponse(sitter, user.get()));
+		});
+		return result;
+	}
+
+	@Override
+	public boolean acceptRequestSitter(String id) {
+		Optional<Sitter> sitter = sitterRepository.findByUserId(UUID.fromString(id));
+		if (sitter.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		sitter.get().setStatus(true);
+
+		sitterRepository.save(sitter.get());
+		Optional<User> user = userRepository.findById(sitter.get().getUserId());
+		user.get().setRole(UserRole.EMPLOYEE);
+		userRepository.save(user.get());
+
+		return true;
+	}
+
+	@Override
+	public boolean deleteRequestSitter(String id) {
+		Optional<Sitter> sitter = sitterRepository.findByUserId(UUID.fromString(id));
+		if (sitter.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		sitterRepository.delete(sitter.get());
+		return true;
 	}
 }

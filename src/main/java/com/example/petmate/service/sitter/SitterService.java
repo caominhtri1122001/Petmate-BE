@@ -11,4 +11,10 @@ public interface SitterService {
 	SitterResponse createSitter(SitterRequest request);
 
 	List<SitterInfoResponse> getListSitter();
+
+	List<SitterInfoResponse> getListSitterRequest();
+
+	boolean acceptRequestSitter(String id);
+
+	boolean deleteRequestSitter(String id);
 }
