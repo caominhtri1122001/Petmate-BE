@@ -32,6 +32,7 @@ public interface SitterMapper {
 				.userImage(userEntity.getUserImgUrl())
 				.phone(userEntity.getPhone())
 				.address(entity.getAddress())
+				.emailAddress(userEntity.getEmail())
 				.latitude(entity.getLatitude())
 				.longitude(entity.getLongitude())
 				.yearOfExperience(entity.getYearOfExperience())

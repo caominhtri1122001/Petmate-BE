@@ -18,6 +18,7 @@ public class SitterInfoResponse {
 	private String userImage;
 	private String phone;
 	private String address;
+	private String emailAddress;
 	private double latitude;
 	private double longitude;
 	private int yearOfExperience;

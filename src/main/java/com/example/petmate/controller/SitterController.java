@@ -15,11 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -59,5 +55,29 @@ public class SitterController {
 	@GetMapping("/getSitter")
 	public ResponseEntity<List<SitterInfoResponse>> getSitterAround() throws ResponseException {
 		return ResponseEntity.ok(sitterService.getListSitter());
+	}
+
+	@Operation(summary = "api to get requests to become sitter")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get requests to become sitter", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SitterInfoResponse.class)) }) })
+	@GetMapping("/requests")
+	public ResponseEntity<List<SitterInfoResponse>> getRequest() throws ResponseException {
+		return ResponseEntity.ok(sitterService.getListSitterRequest());
+	}
+
+	@Operation(summary = "api to accept request to become sitter")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to accept request to become sitter", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+	@GetMapping("/requests/{id}")
+	public boolean acceptRequest(@PathVariable String id) throws ResponseException {
+		return sitterService.acceptRequestSitter(id);
+	}
+
+	@Operation(summary = "api to delete request to become sitter")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to delete request to become sitter", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+	@DeleteMapping("/requests/{id}")
+	public boolean deleteRequest(@PathVariable String id) throws ResponseException {
+		return sitterService.deleteRequestSitter(id);
 	}
 }
