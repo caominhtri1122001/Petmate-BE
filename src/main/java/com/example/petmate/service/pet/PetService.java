@@ -5,10 +5,11 @@ import com.example.petmate.exception.ResponseException;
 import com.example.petmate.model.request.PetRequest;
 import com.example.petmate.model.response.PetResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PetService {
-    PetResponse createPet(PetRequest request) throws ResponseException;
+    PetResponse createPet(PetRequest request) throws ResponseException, IOException;
 
     boolean updatePet(String petId, PetRequest request);
 

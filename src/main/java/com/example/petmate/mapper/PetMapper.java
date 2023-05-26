@@ -18,11 +18,12 @@ public interface PetMapper {
                 .age(entity.getAge())
                 .gender(entity.isGender())
                 .weight(entity.getWeight())
+                .image(entity.getPetImgUrl())
                 .owner(user.getEmail())
                 .build();
     }
 
-    static Pet toPetEntity(PetRequest petRequest) {
+    static Pet toPetEntity(PetRequest petRequest, String image) {
         return Pet.builder()
                 .name(petRequest.getName())
                 .species(petRequest.getSpecies())
@@ -30,6 +31,7 @@ public interface PetMapper {
                 .age(petRequest.getAge())
                 .gender(petRequest.isGender())
                 .weight(petRequest.getWeight())
+                .petImgUrl(image)
                 .userId(UUID.fromString(petRequest.getOwner()))
                 .build();
     }

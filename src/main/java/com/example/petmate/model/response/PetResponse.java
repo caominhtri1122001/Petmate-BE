@@ -18,5 +18,6 @@ public class PetResponse {
     private int age;
     private boolean gender;
     private int weight;
+    private String image;
     private String owner;
 }

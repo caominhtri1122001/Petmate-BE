@@ -25,6 +25,11 @@ spring:
     username: caominhtri112201@gmail.com
     password: naldykvxmitrtnpi
     port: 587
+  # Config file
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 
 # LocationIQ
 locationiq:
@@ -44,6 +49,14 @@ springdoc:
     enabled: true
     path: "/manage/api-docs/swagger-ui.html"
   show-actuator: false
+
+# Config firebase
+firebase:
+  apiKey: ${FIREBASE_API_KEY}
+  authDomain: ${FIREBASE_AUTH_DOMAIN}
+  projectId: ${FIREBASE_PROJECT_ID}
+  storageBucket: ${FIREBASE_STORAGE_BUCKET}
+  messagingSenderId: ${FIREBASE_MESSAGING_SENDER_ID}
 
 # Config application
 server:

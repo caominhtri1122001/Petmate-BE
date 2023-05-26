@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
 @Setter
@@ -23,6 +24,8 @@ public class PetRequest {
     private boolean gender;
 
     private int weight;
+
+    private MultipartFile image;
 
     private String owner;
 }

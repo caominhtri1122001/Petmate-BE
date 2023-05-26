@@ -11,14 +11,17 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/pets")
+@Slf4j
 public class PetController {
     private final PetService petService;
 
@@ -30,7 +33,9 @@ public class PetController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to create pet for user", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PetRequest.class)) }) })
     @PostMapping
-    public ResponseEntity<PetResponse> createPet(PetRequest request) throws ResponseException {
+    public ResponseEntity<PetResponse> createPet(@ModelAttribute PetRequest request) throws ResponseException, IOException {
+        log.info("adding new pet");
+        log.info(request.getName());
         return ResponseEntity.ok(petService.createPet(request));
     }
 
