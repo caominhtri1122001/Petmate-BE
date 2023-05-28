@@ -14,14 +14,19 @@ import com.example.petmate.repository.SitterRepository;
 import com.example.petmate.repository.UserRepository;
 import com.example.petmate.service.third_party.locationIQ.LocationIqService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -32,11 +37,17 @@ public class SitterServiceImpl implements SitterService {
 
 	private final LocationIqService locationIqService;
 
+	private final JavaMailSender javaMailSender;
+
+	@Value("${spring.mail.username}")
+	private String fromMail;
+
 	public SitterServiceImpl(SitterRepository sitterRepository, UserRepository userRepository,
-			LocationIqService locationIqService) {
+							 LocationIqService locationIqService, JavaMailSender javaMailSender) {
 		this.sitterRepository = sitterRepository;
 		this.userRepository = userRepository;
 		this.locationIqService = locationIqService;
+		this.javaMailSender = javaMailSender;
 	}
 
 	@Override
@@ -78,7 +89,7 @@ public class SitterServiceImpl implements SitterService {
 	}
 
 	@Override
-	public boolean acceptRequestSitter(String id) {
+	public boolean acceptRequestSitter(String id) throws MessagingException, UnsupportedEncodingException {
 		Optional<Sitter> sitter = sitterRepository.findByUserId(UUID.fromString(id));
 		if (sitter.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
@@ -89,17 +100,50 @@ public class SitterServiceImpl implements SitterService {
 		Optional<User> user = userRepository.findById(sitter.get().getUserId());
 		user.get().setRole(UserRole.EMPLOYEE);
 		userRepository.save(user.get());
+		sendEmail(user.get().getEmail(), user.get().getFirstName(), user.get().getLastName(), true);
 
 		return true;
 	}
 
 	@Override
-	public boolean deleteRequestSitter(String id) {
+	public boolean deleteRequestSitter(String id) throws MessagingException, UnsupportedEncodingException {
 		Optional<Sitter> sitter = sitterRepository.findByUserId(UUID.fromString(id));
 		if (sitter.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
+		Optional<User> user = userRepository.findById(sitter.get().getUserId());
 		sitterRepository.delete(sitter.get());
+		sendEmail(user.get().getEmail(), user.get().getFirstName(), user.get().getLastName(), false);
 		return true;
+	}
+
+
+	private void sendEmail(String email, String firstName, String lastName, boolean status)
+			throws MessagingException, UnsupportedEncodingException {
+		MimeMessage message = javaMailSender.createMimeMessage();
+		MimeMessageHelper helper = new MimeMessageHelper(message);
+
+		helper.setFrom(fromMail, "PetMate Support");
+		helper.setTo(email);
+
+		String subject = "Announcement of Becoming a Sitter";
+		String content = "<p>Dear " + firstName + " " + lastName + ",</p>"
+				+ "<p>We are delighted to inform you that your application to become a sitter at PetMate has been accepted. Congratulations!</p>"
+				+ "<p>We believe that your experience and passion for animal care make you an excellent fit for our team. </p>"
+				+ "<p>Thank you for choosing PetMate as your preferred place to pursue your passion for pet care. We are excited to welcome you to our team!</p>" + "<p>Best regards.</p>" + "<p>PetMate team</p>";
+
+
+		if (!status) {
+			subject = "Regretful Decline of Your Sitter Application at PetMate :(";
+			content = "<p>Dear " + firstName + " " + lastName + ",</p>"
+					+ "<p>We hope this email finds you well. We appreciate your interest in becoming a sitter at PetMate and taking the time to apply for the position.</p>"
+					+ "<p>After careful consideration and evaluation of all applicants, we regret to inform you that we are unable to proceed with your application at this time. </p>"
+					+ "<p>We thank you for your understanding and wish you the very best in your future endeavors.</p>" + "<p>Best regards.</p>" + "<p>PetMate team</p>";
+		}
+
+		helper.setSubject(subject);
+		helper.setText(content, true);
+
+		javaMailSender.send(message);
 	}
 }

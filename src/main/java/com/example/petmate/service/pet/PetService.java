@@ -11,7 +11,7 @@ import java.util.List;
 public interface PetService {
     PetResponse createPet(PetRequest request) throws ResponseException, IOException;
 
-    boolean updatePet(String petId, PetRequest request);
+    boolean updatePet(String petId, PetRequest request) throws IOException;
 
     Pet getPetById(String petId);
 

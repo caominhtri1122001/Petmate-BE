@@ -43,7 +43,7 @@ public class PetController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update pet for user", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PetRequest.class)) }) })
     @PatchMapping("/{id}")
-    public Boolean updatePet(@PathVariable String id, PetRequest request) throws ResponseException {
+    public Boolean updatePet(@PathVariable String id, @ModelAttribute PetRequest request) throws ResponseException, IOException {
         return petService.updatePet(id,request);
     }
 
