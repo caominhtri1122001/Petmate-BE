@@ -46,7 +46,11 @@ public class PetServiceImpl implements PetService {
     }
 
     @Override
-    public boolean updatePet(String petId, PetRequest request) {
+    public boolean updatePet(String petId, PetRequest request) throws IOException {
+        String image = "";
+        if (request.getImage() != null) {
+            image = firebaseStorageService.uploadImage(request.getImage());
+        }
         Optional<Pet> pet = petRepository.findById(UUID.fromString(petId));
         if (pet.isEmpty()) {
             throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
@@ -63,6 +67,9 @@ public class PetServiceImpl implements PetService {
         pet.get().setAge(request.getAge());
         pet.get().setGender(request.isGender());
         pet.get().setWeight(request.getWeight());
+        if (image != "") {
+            pet.get().setPetImgUrl(image);
+        }
         petRepository.save((pet.get()));
 
         return true;

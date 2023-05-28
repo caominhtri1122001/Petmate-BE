@@ -17,6 +17,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class SitterController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to accept request to become sitter", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
 	@GetMapping("/requests/{id}")
-	public boolean acceptRequest(@PathVariable String id) throws ResponseException {
+	public boolean acceptRequest(@PathVariable String id) throws ResponseException, MessagingException, UnsupportedEncodingException {
 		return sitterService.acceptRequestSitter(id);
 	}
 
@@ -77,7 +78,7 @@ public class SitterController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to delete request to become sitter", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
 	@DeleteMapping("/requests/{id}")
-	public boolean deleteRequest(@PathVariable String id) throws ResponseException {
+	public boolean deleteRequest(@PathVariable String id) throws ResponseException, MessagingException, UnsupportedEncodingException {
 		return sitterService.deleteRequestSitter(id);
 	}
 }
