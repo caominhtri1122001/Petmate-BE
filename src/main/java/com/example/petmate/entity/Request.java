@@ -50,4 +50,7 @@ public class Request extends BaseEntity{
 
 	@Column(name = "pet_id")
 	private UUID petId;
+
+	@Column(name = "service_id")
+	private UUID serviceId;
 }

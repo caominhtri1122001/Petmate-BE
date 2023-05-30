@@ -27,6 +27,7 @@ public interface SitterMapper {
 	static SitterInfoResponse toSitterInfoResponse(Sitter entity, User userEntity) {
 		return SitterInfoResponse.builder()
 				.userId(entity.getUserId().toString())
+				.sitterId(entity.getId().toString())
 				.firstname(userEntity.getFirstName())
 				.lastName(userEntity.getLastName())
 				.userImage(userEntity.getUserImgUrl())

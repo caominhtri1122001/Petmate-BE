@@ -35,9 +35,6 @@ public class StoreServiceImpl implements StoreService {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
 		service.get().setName(request.getName());
-		service.get().setDescription(request.getDescription());
-		service.get().setPrice(request.getPrice());
-		service.get().setType(request.getType());
 		serviceRepository.save(service.get());
 		return true;
 	}

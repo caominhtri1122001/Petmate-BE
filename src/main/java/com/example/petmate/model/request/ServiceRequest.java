@@ -14,7 +14,4 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class ServiceRequest {
 	private	String name;
-	private String description;
-	private float price;
-	private ServiceType type;
 }

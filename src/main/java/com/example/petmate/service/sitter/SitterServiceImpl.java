@@ -89,6 +89,16 @@ public class SitterServiceImpl implements SitterService {
 	}
 
 	@Override
+	public SitterInfoResponse getSitterById(String sitterId) {
+		Optional<Sitter> sitter = sitterRepository.findById(UUID.fromString(sitterId));
+		if (sitter.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		Optional<User> user = userRepository.findById(sitter.get().getUserId());
+		return SitterMapper.toSitterInfoResponse(sitter.get(), user.get());
+	}
+
+	@Override
 	public boolean acceptRequestSitter(String id) throws MessagingException, UnsupportedEncodingException {
 		Optional<Sitter> sitter = sitterRepository.findByUserId(UUID.fromString(id));
 		if (sitter.isEmpty()) {

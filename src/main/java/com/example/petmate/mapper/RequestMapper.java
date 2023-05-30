@@ -14,6 +14,7 @@ public interface RequestMapper {
 				.userId(UUID.fromString(request.getUserId()))
 				.sitterId(UUID.fromString(request.getSitterId()))
 				.petId(UUID.fromString(request.getPetId()))
+				.serviceId(UUID.fromString(request.getServiceId()))
 				.startDate(TimeUtils.convertStringToDate(request.getStartDate()))
 				.endDate(TimeUtils.convertStringToDate(request.getEndDate()))
 				.startTime(TimeUtils.convertStringToTime(request.getStartTime()))

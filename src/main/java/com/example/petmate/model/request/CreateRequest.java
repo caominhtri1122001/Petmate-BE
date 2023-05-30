@@ -15,6 +15,7 @@ public class CreateRequest {
 	private String userId;
 	private String sitterId;
 	private String petId;
+	private String serviceId;
 	private String startDate;
 	private String endDate;
 	private String startTime;

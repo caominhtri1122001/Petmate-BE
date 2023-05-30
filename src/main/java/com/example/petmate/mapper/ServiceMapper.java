@@ -19,18 +19,12 @@ public interface ServiceMapper {
 		return StoreServiceDto.builder()
 				.id(service.getId().toString())
 				.name(service.getName())
-				.description(service.getDescription())
-				.price(service.getPrice())
-				.type(service.getType())
 				.build();
 	}
 
 	static Service toEntity(ServiceRequest request) {
 		return Service.builder()
 				.name(request.getName())
-				.description(request.getDescription())
-				.price(request.getPrice())
-				.type(request.getType())
 				.build();
 	}
 }
