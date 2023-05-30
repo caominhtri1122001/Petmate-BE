@@ -72,7 +72,9 @@ public class SitterServiceImpl implements SitterService {
 		List<Sitter> sitters = sitterRepository.findAll();
 		sitters.forEach(sitter -> {
 			Optional<User> user = userRepository.findById(sitter.getUserId());
-			result.add(SitterMapper.toSitterInfoResponse(sitter, user.get()));
+			if(user.get().getRole() == UserRole.EMPLOYEE) {
+				result.add(SitterMapper.toSitterInfoResponse(sitter, user.get()));
+			}
 		});
 		return result;
 	}

@@ -3,6 +3,9 @@ package com.example.petmate.service.provider;
 import com.example.petmate.constant.ResponseCodes;
 import com.example.petmate.entity.Provider;
 import com.example.petmate.exception.ResponseException;
+import com.example.petmate.mapper.ProviderMapper;
+import com.example.petmate.model.request.ProviderRequest;
+import com.example.petmate.model.response.ProviderResponse;
 import com.example.petmate.repository.ProviderRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +23,8 @@ public class ProviderServiceImpl implements ProviderService {
 	}
 
 	@Override
-	public boolean createServiceForSitter(Provider request) {
-		providerRepository.save(request);
+	public boolean createServiceForSitter(ProviderRequest request) {
+		providerRepository.save(ProviderMapper.toEntity(request));
 		return true;
 	}
 
@@ -46,12 +49,12 @@ public class ProviderServiceImpl implements ProviderService {
 	}
 
 	@Override
-	public List<Provider> getListServiceBySitter(String sitterId) {
+	public List<ProviderResponse> getListServiceBySitter(String sitterId) {
 		Optional<List<Provider>> providers = providerRepository.findBySitterId(UUID.fromString(sitterId));
 		if(providers.isEmpty()) {
 			return null;
 		}
-		return providers.get();
+		return ProviderMapper.toListResponse(providers.get());
 	}
 
 	@Override

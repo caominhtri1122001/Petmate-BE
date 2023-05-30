@@ -3,7 +3,9 @@ package com.example.petmate.controller;
 import com.example.petmate.dto.StoreServiceDto;
 import com.example.petmate.entity.Provider;
 import com.example.petmate.exception.ResponseException;
+import com.example.petmate.model.request.ProviderRequest;
 import com.example.petmate.model.request.ServiceRequest;
+import com.example.petmate.model.response.ProviderResponse;
 import com.example.petmate.service.provider.ProviderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -33,17 +35,17 @@ public class ProviderController {
 
 	@Operation(summary = "api to get all services")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all services", content = {
-			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Provider.class)) }) })
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProviderResponse.class)) }) })
 	@GetMapping("/services/{id}")
-	public ResponseEntity<List<Provider>> getAllServices(@PathVariable String id) throws ResponseException {
+	public ResponseEntity<List<ProviderResponse>> getAllServices(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(providerService.getListServiceBySitter(id));
 	}
 
 	@Operation(summary = "api to create service")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to create service", content = {
-			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Provider.class)) }) })
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProviderRequest.class)) }) })
 	@PostMapping
-	public boolean createService(Provider request) throws ResponseException {
+	public boolean createService(ProviderRequest request) throws ResponseException {
 		return providerService.createServiceForSitter(request);
 	}
 
