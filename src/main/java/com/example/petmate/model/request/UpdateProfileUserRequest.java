@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateAdminRequest {
+public class UpdateProfileUserRequest {
     private String firstName;
 
     private String lastName;

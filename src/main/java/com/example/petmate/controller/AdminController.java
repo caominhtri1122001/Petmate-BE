@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -34,9 +35,9 @@ public class AdminController {
 
     @Operation(summary = "api to update admin")
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update admin", content = {
-            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateEmployeeRequest.class)) }) })
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateAdminRequest.class)) }) })
     @PatchMapping("/{id}")
-    public Boolean updateAdmin(@PathVariable String id,@RequestBody UpdateAdminRequest request) throws ResponseException {
+    public Boolean updateAdmin(@PathVariable String id, @ModelAttribute UpdateAdminRequest request) throws ResponseException, IOException {
         return userService.updateAdmin(id, request);
     }
 
@@ -60,7 +61,7 @@ public class AdminController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update employee for admin", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateEmployeeRequest.class)) }) })
     @PatchMapping("/employee/{id}")
-    public Boolean updateEmployee(@PathVariable String id,@RequestBody UpdateEmployeeRequest request) throws ResponseException {
+    public Boolean updateEmployee(@PathVariable String id, @ModelAttribute UpdateEmployeeRequest request) throws ResponseException, IOException {
         return userService.updateEmployee(id, request);
     }
 
@@ -100,7 +101,7 @@ public class AdminController {
     @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update customer for admin", content = {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = UpdateCustomerRequest.class)) }) })
     @PatchMapping("/customer/{id}")
-    public Boolean updateCustomer(@PathVariable String id,@RequestBody UpdateCustomerRequest request) throws ResponseException {
+    public Boolean updateCustomer(@PathVariable String id, @ModelAttribute UpdateCustomerRequest request) throws ResponseException, IOException {
         return userService.updateCustomer(id, request);
     }
 

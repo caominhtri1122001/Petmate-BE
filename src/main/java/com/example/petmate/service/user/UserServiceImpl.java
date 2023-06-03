@@ -10,6 +10,7 @@ import com.example.petmate.model.request.*;
 import com.example.petmate.model.response.AddAdminResponse;
 import com.example.petmate.model.response.UserLoginResponse;
 import com.example.petmate.repository.UserRepository;
+import com.example.petmate.service.third_party.firebase.FirebaseStorageService;
 import com.example.petmate.utils.JwtUtils;
 import com.example.petmate.utils.StringUtils;
 import com.example.petmate.utils.TimeUtils;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Objects;
@@ -33,12 +35,15 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 
 	private final JavaMailSender javaMailSender;
+
+	private final FirebaseStorageService firebaseStorageService;
 	@Value("${spring.mail.username}")
 	private String fromMail;
 
-	public UserServiceImpl(UserRepository userRepository, JavaMailSender javaMailSender) {
+	public UserServiceImpl(UserRepository userRepository, JavaMailSender javaMailSender, FirebaseStorageService firebaseStorageService) {
 		this.userRepository = userRepository;
 		this.javaMailSender = javaMailSender;
+		this.firebaseStorageService = firebaseStorageService;
 	}
 
 	@Override
@@ -86,7 +91,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateAdmin(String id, UpdateAdminRequest request) throws ResponseException {
+	public boolean updateAdmin(String id, UpdateAdminRequest request) throws ResponseException, IOException {
+		String image = "";
+		if (request.getImage() != null) {
+			image = firebaseStorageService.uploadImage(request.getImage());
+		}
 		Optional<User> admin = userRepository.findById(UUID.fromString(id));
 
 		if ((admin.get().getRole() == UserRole.ADMIN) && admin.isPresent()) {
@@ -96,6 +105,9 @@ public class UserServiceImpl implements UserService {
 			admin.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
 			admin.get().setGender(request.isGender());
 			admin.get().setPhone(request.getPhone());
+			if (image != "") {
+				admin.get().setUserImgUrl(image);
+			}
 			userRepository.save(admin.get());
 		} else {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
@@ -162,6 +174,55 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public boolean updateProfileUser(String id, UpdateProfileUserRequest request) throws ResponseException, IOException {
+		String image = "";
+		if (request.getImage() != null) {
+			image = firebaseStorageService.uploadImage(request.getImage());
+		}
+		Optional<User> user = userRepository.findById(UUID.fromString(id));
+
+		if (user.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		user.get().setFirstName(request.getFirstName());
+		user.get().setLastName(request.getLastName());
+		user.get().setEmail(request.getEmailAddress());
+		user.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
+		user.get().setGender(request.isGender());
+		user.get().setPhone(request.getPhone());
+		if (image != "") {
+			user.get().setUserImgUrl(image);
+		}
+		userRepository.save(user.get());
+
+		return true;
+	}
+
+	@Override
+	public boolean changePassword(String id, ChangePasswordRequest request) {
+		try {
+			Optional<User> user = userRepository.findById(UUID.fromString(id));
+			if (user.isEmpty()) {
+				throw new ResponseException(ResponseCodes.PM_ERROR_ACCOUNT_NOT_FOUND);
+			}
+			String password = StringUtils.getShaStringWithSalt(request.getOldPassword(), user.get().getEmail());
+			if (!user.get().getPassword().equals(password)) {
+				throw new ResponseException(ResponseCodes.PM_WRONG_OLD_PASSWORD);
+			}
+
+			user.get().setPassword(StringUtils.getShaStringWithSalt(request.getPassword(),
+					user.get().getEmail()));
+			userRepository.save(user.get());
+		} catch (ResponseException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ResponseException(ResponseCodes.PM_ERROR_INTERNAL_SERVER, e.toString());
+		}
+		return true;
+	}
+
+	@Override
 	public void forgotPassword(String email) throws ResponseException {
 		log.info("forgotPassword...");
 		try {
@@ -191,7 +252,11 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateEmployee(String id, UpdateEmployeeRequest request) throws ResponseException {
+	public boolean updateEmployee(String id, UpdateEmployeeRequest request) throws ResponseException, IOException {
+		String image = "";
+		if (request.getImage() != null) {
+			image = firebaseStorageService.uploadImage(request.getImage());
+		}
 		Optional<User> user = userRepository.findById(UUID.fromString(id));
 		log.info(request.getFirstName());
 		if (user.isEmpty()) {
@@ -204,6 +269,9 @@ public class UserServiceImpl implements UserService {
 		user.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
 		user.get().setGender(request.isGender());
 		user.get().setPhone(request.getPhone());
+		if (image != "") {
+			user.get().setUserImgUrl(image);
+		}
 		userRepository.save(user.get());
 
 		return true;
@@ -257,7 +325,12 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateCustomer(String id, UpdateCustomerRequest request) throws ResponseException {
+	public boolean updateCustomer(String id, UpdateCustomerRequest request) throws ResponseException, IOException {
+		String image = "";
+		if (request.getImage() != null) {
+			image = firebaseStorageService.uploadImage(request.getImage());
+		}
+
 		Optional<User> customer = userRepository.findById(UUID.fromString(id));
 
 		if ((customer.get().getRole() == UserRole.CUSTOMER) && customer.isPresent()) {
@@ -267,6 +340,9 @@ public class UserServiceImpl implements UserService {
 			customer.get().setDateOfBirth(TimeUtils.converToLocalDateTimeNoIso(request.getDateOfBirth()));
 			customer.get().setGender(request.isGender());
 			customer.get().setPhone(request.getPhone());
+			if (image != "") {
+				customer.get().setUserImgUrl(image);
+			}
 			userRepository.save(customer.get());
 		} else {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);

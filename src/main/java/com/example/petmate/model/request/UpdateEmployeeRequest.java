@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -26,4 +27,6 @@ public class UpdateEmployeeRequest {
     private boolean gender;
 
     private String phone;
+
+    private MultipartFile image;
 }
