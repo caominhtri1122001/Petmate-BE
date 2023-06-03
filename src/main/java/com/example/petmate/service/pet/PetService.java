@@ -18,4 +18,6 @@ public interface PetService {
     List<Pet> getAllPetsOfUser(String userId);
 
     boolean deletePet(String petId);
+
+    List<Pet> getAllPets();
 }

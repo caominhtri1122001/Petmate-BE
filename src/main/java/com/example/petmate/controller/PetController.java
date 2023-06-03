@@ -70,4 +70,12 @@ public class PetController {
     public Boolean deletePet(@PathVariable String id) throws ResponseException {
         return petService.deletePet(id);
     }
+
+    @Operation(summary = "api to get all pet for admin")
+    @ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all pet for admin", content = {
+            @Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+    @GetMapping
+    public ResponseEntity<List<Pet>> getPets() throws ResponseException {
+        return ResponseEntity.ok(petService.getAllPets());
+    }
 }
