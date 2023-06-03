@@ -106,4 +106,9 @@ public class PetServiceImpl implements PetService {
         petRepository.deleteById(UUID.fromString(petId));
         return true;
     }
+
+    @Override
+    public List<Pet> getAllPets() {
+        return petRepository.findAll();
+    }
 }
