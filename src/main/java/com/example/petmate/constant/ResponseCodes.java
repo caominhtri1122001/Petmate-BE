@@ -1,9 +1,5 @@
 package com.example.petmate.constant;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
 public enum ResponseCodes {
 	PM_SUCCESS("00", "Success"),
 	PM_ERROR_ACCOUNT_NOT_FOUND("01", "Account not found"),
@@ -20,7 +16,9 @@ public enum ResponseCodes {
 
 	RT_ERROR_ALREADY_REQUESTED("10", "We already have your request!"),
 
-	RT_ERROR_WRONG_ADDRESS("11", "Your address may be not exsits!");
+	RT_ERROR_WRONG_ADDRESS("11", "Your address may be not exsits!"),
+
+	PM_WRONG_OLD_PASSWORD("12", "Wrong old password!!");
 	private String code;
 	private String message;
 
