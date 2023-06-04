@@ -56,7 +56,7 @@ public class TimeUtils {
 	}
 
 	public static LocalDate convertStringToDate(String date) {
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		return LocalDate.parse(date, formatter);
 	}
 
