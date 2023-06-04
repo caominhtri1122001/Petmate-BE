@@ -12,6 +12,7 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SitterInfoResponse {
+	private String sitterId;
 	private String userId;
 	private String firstname;
 	private String lastName;

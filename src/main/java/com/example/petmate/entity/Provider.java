@@ -1,6 +1,5 @@
 package com.example.petmate.entity;
 
-import com.example.petmate.constant.ServiceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,8 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.Table;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -19,8 +17,14 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "services")
-public class Service extends BaseEntity {
+@Table(name = "providers")
+public class Provider extends BaseEntity {
 	@Column(name = "name")
 	private String name;
+
+	@Column(name = "price")
+	private float price;
+
+	@Column(name = "sitter_id")
+	private UUID sitterId;
 }

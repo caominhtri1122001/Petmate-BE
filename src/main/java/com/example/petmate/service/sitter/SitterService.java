@@ -16,6 +16,8 @@ public interface SitterService {
 
 	List<SitterInfoResponse> getListSitterRequest();
 
+	SitterInfoResponse getSitterById(String sitterId);
+
 	boolean acceptRequestSitter(String id) throws MessagingException, UnsupportedEncodingException;
 
 	boolean deleteRequestSitter(String id) throws MessagingException, UnsupportedEncodingException;

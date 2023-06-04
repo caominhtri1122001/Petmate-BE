@@ -1,6 +1,5 @@
 package com.example.petmate.model.request;
 
-import com.example.petmate.constant.ServiceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,6 +11,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServiceRequest {
-	private	String name;
+public class ProviderRequest {
+	private String name;
+	private float price;
+	private String sitterId;
 }
