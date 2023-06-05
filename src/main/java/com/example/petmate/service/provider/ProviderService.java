@@ -15,5 +15,7 @@ public interface ProviderService {
 
 	List<ProviderResponse> getListServiceBySitter(String sitterId);
 
+	List<ProviderResponse> getListServiceByUser(String userId);
+
 	boolean removeService(String serviceId);
 }

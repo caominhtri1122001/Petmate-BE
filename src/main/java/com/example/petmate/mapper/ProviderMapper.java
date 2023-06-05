@@ -28,6 +28,7 @@ public interface ProviderMapper {
 				.id(entity.getId().toString())
 				.name(entity.getName())
 				.price(entity.getPrice())
+				.sitterId(entity.getSitterId().toString())
 				.build();
 	}
 }

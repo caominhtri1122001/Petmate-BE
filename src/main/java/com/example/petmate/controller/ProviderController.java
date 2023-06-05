@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,11 +42,19 @@ public class ProviderController {
 		return ResponseEntity.ok(providerService.getListServiceBySitter(id));
 	}
 
+	@Operation(summary = "api to get all services by userid")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all services by userid", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProviderResponse.class)) }) })
+	@GetMapping("/services/user/{id}")
+	public ResponseEntity<List<ProviderResponse>> getAllServicesByUserId(@PathVariable String id) throws ResponseException {
+		return ResponseEntity.ok(providerService.getListServiceByUser(id));
+	}
+
 	@Operation(summary = "api to create service")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to create service", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProviderRequest.class)) }) })
 	@PostMapping
-	public boolean createService(ProviderRequest request) throws ResponseException {
+	public boolean createService(@RequestBody ProviderRequest request) throws ResponseException {
 		return providerService.createServiceForSitter(request);
 	}
 

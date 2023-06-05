@@ -18,7 +18,9 @@ public enum ResponseCodes {
 
 	RT_ERROR_WRONG_ADDRESS("11", "Your address may be not exsits!"),
 
-	PM_WRONG_OLD_PASSWORD("12", "Wrong old password!!");
+	PM_WRONG_OLD_PASSWORD("12", "Wrong old password!!"),
+
+	PM_ALREADY_HAS_SERVICE("13", "You already have this service!!");
 	private String code;
 	private String message;
 

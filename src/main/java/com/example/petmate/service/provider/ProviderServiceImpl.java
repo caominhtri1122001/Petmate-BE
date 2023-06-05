@@ -7,6 +7,8 @@ import com.example.petmate.mapper.ProviderMapper;
 import com.example.petmate.model.request.ProviderRequest;
 import com.example.petmate.model.response.ProviderResponse;
 import com.example.petmate.repository.ProviderRepository;
+import com.example.petmate.repository.SitterRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +20,20 @@ public class ProviderServiceImpl implements ProviderService {
 
 	private final ProviderRepository providerRepository;
 
-	public ProviderServiceImpl(ProviderRepository providerRepository) {
+	private final SitterRepository sitterRepository;
+
+	public ProviderServiceImpl(ProviderRepository providerRepository, SitterRepository sitterRepository) {
 		this.providerRepository = providerRepository;
+		this.sitterRepository = sitterRepository;
 	}
 
 	@Override
 	public boolean createServiceForSitter(ProviderRequest request) {
-		providerRepository.save(ProviderMapper.toEntity(request));
+		Optional<Provider> entity = providerRepository.findByName(request.getName());
+		if (entity.isPresent()) {
+			throw new ResponseException(ResponseCodes.PM_ALREADY_HAS_SERVICE);
+		}
+ 		providerRepository.save(ProviderMapper.toEntity(request));
 		return true;
 	}
 
@@ -51,6 +60,16 @@ public class ProviderServiceImpl implements ProviderService {
 	@Override
 	public List<ProviderResponse> getListServiceBySitter(String sitterId) {
 		Optional<List<Provider>> providers = providerRepository.findBySitterId(UUID.fromString(sitterId));
+		if(providers.isEmpty()) {
+			return null;
+		}
+		return ProviderMapper.toListResponse(providers.get());
+	}
+
+	@Override
+	public List<ProviderResponse> getListServiceByUser(String userId) {
+		UUID sitterId = sitterRepository.findByUserId(UUID.fromString(userId)).get().getId();
+		Optional<List<Provider>> providers = providerRepository.findBySitterId(sitterId);
 		if(providers.isEmpty()) {
 			return null;
 		}
