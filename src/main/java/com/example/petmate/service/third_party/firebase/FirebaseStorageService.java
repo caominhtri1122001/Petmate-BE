@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -25,8 +26,9 @@ public class FirebaseStorageService {
 	@EventListener
 	public void init(ApplicationReadyEvent event) {
 		try {
-			FileInputStream serviceAccount = new FileInputStream(
-					"C:\\Users\\Cao Minh Tri\\IdeaProjects\\petmate\\src\\main\\resources\\serviceAccountKey.json");
+			String fileName = "serviceAccountKey.json";
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			InputStream serviceAccount = classloader.getResourceAsStream(fileName);
 			storage = StorageOptions.newBuilder()
 					.setCredentials(GoogleCredentials.fromStream(serviceAccount))
 					.setProjectId("petmate-ad592")
