@@ -11,4 +11,6 @@ import java.util.UUID;
 @Repository
 public interface RequestRepository extends JpaRepository<Request, UUID> {
 	List<Request> findByUserId(UUID userId);
+
+	List<Request> findBySitterId(UUID sitterId);
 }

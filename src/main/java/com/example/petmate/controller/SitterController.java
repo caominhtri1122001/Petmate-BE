@@ -66,6 +66,14 @@ public class SitterController {
 		return ResponseEntity.ok(sitterService.getSitterById(id));
 	}
 
+	@Operation(summary = "api to get sitter by userId")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get sitter by userId", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SitterInfoResponse.class)) }) })
+	@GetMapping("/user/{id}")
+	public  ResponseEntity<SitterInfoResponse> getSitterByUserId(@PathVariable String id) throws ResponseException {
+		return ResponseEntity.ok(sitterService.getSitterByUserId(id));
+	}
+
 
 	@Operation(summary = "api to get requests to become sitter")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get requests to become sitter", content = {

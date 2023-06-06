@@ -11,4 +11,6 @@ public interface RequestService {
 	boolean createRequest(CreateRequest request);
 
 	List<RequestResponse> getListRequestByUserId(String userId);
+
+	List<RequestResponse> getListRequestBySitterId(String sitterId);
 }

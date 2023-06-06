@@ -22,8 +22,8 @@ spring:
   # Config spring mail
   mail:
     host: smtp.gmail.com
-    username: caominhtri112201@gmail.com
-    password: naldykvxmitrtnpi
+    username: ${MAIL_SUPPORT}
+    password: ${MAIL_PASSWORD}
     port: 587
   # Config file
   servlet:

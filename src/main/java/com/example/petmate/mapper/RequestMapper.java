@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Mapper
 public interface RequestMapper {
-	static Request toEntity (CreateRequest request) {
+	static Request toEntity(CreateRequest request) {
 		return Request.builder()
 				.userId(UUID.fromString(request.getUserId()))
 				.sitterId(UUID.fromString(request.getSitterId()))
@@ -26,10 +26,13 @@ public interface RequestMapper {
 				.build();
 	}
 
-	static RequestResponse toResponse(Request entity, String petName, String sitterName,String sitterAvatar, String serviceName, float price) {
+	static RequestResponse toResponse(Request entity, String petName, String sitterName, String sitterAvatar,
+			String serviceName, float price, String customerName, String customerImage) {
 		return RequestResponse.builder()
 				.requestId(entity.getId().toString())
 				.userId(entity.getUserId().toString())
+				.customerName(customerName)
+				.customerImage(customerImage)
 				.sitterId(entity.getSitterId().toString())
 				.sitterName(sitterName)
 				.sitterAvatar(sitterAvatar)

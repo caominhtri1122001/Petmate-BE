@@ -47,4 +47,12 @@ public class RequestController {
 	public ResponseEntity<List<RequestResponse>> getListRequest(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(requestService.getListRequestByUserId(id));
 	}
+
+	@Operation(summary = "api to get all request by sitter id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all request by sitter id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Request.class)) }) })
+	@GetMapping("/sitter/{id}")
+	public ResponseEntity<List<RequestResponse>> getListRequestBySitter(@PathVariable String id) throws ResponseException {
+		return ResponseEntity.ok(requestService.getListRequestBySitterId(id));
+	}
 }

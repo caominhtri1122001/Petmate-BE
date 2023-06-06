@@ -22,15 +22,15 @@ import java.util.UUID;
 @Slf4j
 public class RequestServiceImpl implements RequestService {
 
-	private RequestRepository requestRepository;
+	private final RequestRepository requestRepository;
 
-	private PetRepository petRepository;
+	private final PetRepository petRepository;
 
-	private ProviderRepository providerRepository;
+	private final ProviderRepository providerRepository;
 
-	private SitterRepository sitterRepository;
+	private final SitterRepository sitterRepository;
 
-	private UserRepository userRepository;
+	private final UserRepository userRepository;
 
 	public RequestServiceImpl(RequestRepository requestRepository, PetRepository petRepository,
 			ProviderRepository providerRepository, SitterRepository sitterRepository, UserRepository userRepository) {
@@ -59,7 +59,32 @@ public class RequestServiceImpl implements RequestService {
 			Optional<User> userEntity = userRepository.findById(UUID.fromString(getUserId));
 			String sitterName = userEntity.get().getFirstName() + " " + userEntity.get().getLastName();
 			String sitterAvatar = userEntity.get().getUserImgUrl();
-			result.add(RequestMapper.toResponse(request, petName, sitterName,sitterAvatar, serviceName, price));
+			Optional<User> customer = userRepository.findById(UUID.fromString(userId));
+			String customerName = customer.get().getFirstName() + customer.get().getLastName();
+			String customerAvatar = customer.get().getUserImgUrl();
+			result.add(RequestMapper.toResponse(request, petName, sitterName, sitterAvatar, serviceName, price,
+					customerName, customerAvatar));
+		});
+		return result;
+	}
+
+	@Override
+	public List<RequestResponse> getListRequestBySitterId(String sitterId) {
+		List<Request> requests = requestRepository.findBySitterId(UUID.fromString(sitterId));
+		List<RequestResponse> result = new ArrayList<>();
+		requests.forEach(request -> {
+			String petName = petRepository.findById(request.getPetId()).get().getName();
+			String serviceName = providerRepository.findById(request.getServiceId()).get().getName();
+			float price = providerRepository.findById(request.getServiceId()).get().getPrice();
+			String getUserId = sitterRepository.findById(request.getSitterId()).get().getUserId().toString();
+			Optional<User> userEntity = userRepository.findById(UUID.fromString(getUserId));
+			String sitterName = userEntity.get().getFirstName() + " " + userEntity.get().getLastName();
+			String sitterAvatar = userEntity.get().getUserImgUrl();
+			Optional<User> customer = userRepository.findById(request.getUserId());
+			String customerName = customer.get().getFirstName() + customer.get().getLastName();
+			String customerAvatar = customer.get().getUserImgUrl();
+			result.add(RequestMapper.toResponse(request, petName, sitterName, sitterAvatar, serviceName, price,
+					customerName, customerAvatar));
 		});
 		return result;
 	}

@@ -14,6 +14,8 @@ import lombok.experimental.SuperBuilder;
 public class RequestResponse {
 	private String requestId;
 	private String userId;
+	private String customerName;
+	private String customerImage;
 	private String sitterId;
 	private String sitterName;
 	private String sitterAvatar;
