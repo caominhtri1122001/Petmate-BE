@@ -27,4 +27,7 @@ public class Provider extends BaseEntity {
 
 	@Column(name = "sitter_id")
 	private UUID sitterId;
+
+	@Column(name = "disable")
+	private boolean disable;
 }

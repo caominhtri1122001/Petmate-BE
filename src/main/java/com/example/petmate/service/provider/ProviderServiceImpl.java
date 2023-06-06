@@ -82,7 +82,21 @@ public class ProviderServiceImpl implements ProviderService {
 		if (provider.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
-		providerRepository.deleteById(UUID.fromString(serviceId));
+
+		provider.get().setDisable(true);
+		providerRepository.save(provider.get());
+		return true;
+	}
+
+	@Override
+	public boolean enableService(String serviceId) {
+		Optional<Provider> provider = providerRepository.findById(UUID.fromString(serviceId));
+		if (provider.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+
+		provider.get().setDisable(false);
+		providerRepository.save(provider.get());
 		return true;
 	}
 }

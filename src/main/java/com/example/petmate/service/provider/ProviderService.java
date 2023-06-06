@@ -18,4 +18,6 @@ public interface ProviderService {
 	List<ProviderResponse> getListServiceByUser(String userId);
 
 	boolean removeService(String serviceId);
+
+	boolean enableService(String serviceId);
 }
