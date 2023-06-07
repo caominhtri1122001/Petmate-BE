@@ -1,9 +1,13 @@
 package com.example.petmate.service.request;
 
+import com.example.petmate.constant.ResponseCodes;
+import com.example.petmate.entity.Provider;
 import com.example.petmate.entity.Request;
 import com.example.petmate.entity.User;
+import com.example.petmate.exception.ResponseException;
 import com.example.petmate.mapper.RequestMapper;
 import com.example.petmate.model.request.CreateRequest;
+import com.example.petmate.model.response.DetailRequestResponse;
 import com.example.petmate.model.response.RequestResponse;
 import com.example.petmate.repository.PetRepository;
 import com.example.petmate.repository.ProviderRepository;
@@ -87,5 +91,17 @@ public class RequestServiceImpl implements RequestService {
 					customerName, customerAvatar));
 		});
 		return result;
+	}
+
+	@Override
+	public DetailRequestResponse viewDetailRequest(String requestId) {
+		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
+		if(request.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		Optional<Provider> provider = providerRepository.findById(request.get().getServiceId());
+		String name = provider.get().getName();
+		float price = provider.get().getPrice();
+		return RequestMapper.toDetailResponse(request.get(), name, price);
 	}
 }

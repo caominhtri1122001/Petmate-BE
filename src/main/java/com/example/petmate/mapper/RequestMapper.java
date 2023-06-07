@@ -1,7 +1,9 @@
 package com.example.petmate.mapper;
 
+import com.example.petmate.constant.StatusType;
 import com.example.petmate.entity.Request;
 import com.example.petmate.model.request.CreateRequest;
+import com.example.petmate.model.response.DetailRequestResponse;
 import com.example.petmate.model.response.RequestResponse;
 import com.example.petmate.utils.TimeUtils;
 import org.mapstruct.Mapper;
@@ -22,7 +24,7 @@ public interface RequestMapper {
 				.endTime(TimeUtils.convertStringToTime(request.getEndTime()))
 				.address(request.getAddress())
 				.message(request.getMessage())
-				.status(false)
+				.status(StatusType.PENDING.getType())
 				.build();
 	}
 
@@ -47,7 +49,20 @@ public interface RequestMapper {
 				.endTime(entity.getEndTime().toString())
 				.address(entity.getAddress())
 				.message(entity.getMessage())
-				.status(entity.isStatus())
+				.status(entity.getStatus())
+				.build();
+	}
+
+	static DetailRequestResponse toDetailResponse(Request entity, String name, float price) {
+		return DetailRequestResponse.builder()
+				.serviceName(name)
+				.price(price)
+				.startDate(entity.getStartDate().toString())
+				.endDate(entity.getEndDate().toString())
+				.startTime(entity.getStartTime().toString())
+				.endTime(entity.getEndTime().toString())
+				.address(entity.getAddress())
+				.message(entity.getMessage())
 				.build();
 	}
 }

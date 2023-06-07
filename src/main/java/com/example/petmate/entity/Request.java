@@ -40,7 +40,7 @@ public class Request extends BaseEntity{
 	private String address;
 
 	@Column(name = "status")
-	private boolean status;
+	private String status;
 
 	@Column(name = "user_id")
 	private UUID userId;

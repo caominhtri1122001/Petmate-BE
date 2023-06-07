@@ -11,17 +11,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestResponse {
-	private String requestId;
-	private String userId;
-	private String customerName;
-	private String customerImage;
-	private String sitterId;
-	private String sitterName;
-	private String sitterAvatar;
-	private String petId;
-	private String petName;
-	private String serviceId;
+public class DetailRequestResponse {
 	private String serviceName;
 	private float price;
 	private String startDate;
@@ -30,6 +20,4 @@ public class RequestResponse {
 	private String endTime;
 	private String address;
 	private String message;
-	private String status;
-
 }

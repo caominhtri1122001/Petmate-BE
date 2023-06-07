@@ -3,6 +3,7 @@ package com.example.petmate.controller;
 import com.example.petmate.entity.Request;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.model.request.CreateRequest;
+import com.example.petmate.model.response.DetailRequestResponse;
 import com.example.petmate.model.response.RequestResponse;
 import com.example.petmate.service.request.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -54,5 +55,13 @@ public class RequestController {
 	@GetMapping("/sitter/{id}")
 	public ResponseEntity<List<RequestResponse>> getListRequestBySitter(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(requestService.getListRequestBySitterId(id));
+	}
+
+	@Operation(summary = "api to get request by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get request by id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = DetailRequestResponse.class)) }) })
+	@GetMapping("/detail/{id}")
+	public ResponseEntity<DetailRequestResponse> viewDetailRequest(@PathVariable String id) throws ResponseException {
+		return ResponseEntity.ok(requestService.viewDetailRequest(id));
 	}
 }
