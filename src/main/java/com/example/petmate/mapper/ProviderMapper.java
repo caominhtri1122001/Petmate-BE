@@ -16,6 +16,7 @@ public interface ProviderMapper {
 				.name(request.getName())
 				.price(request.getPrice())
 				.sitterId(UUID.fromString(request.getSitterId()))
+				.disable(false)
 				.build();
 	}
 
@@ -29,6 +30,7 @@ public interface ProviderMapper {
 				.name(entity.getName())
 				.price(entity.getPrice())
 				.sitterId(entity.getSitterId().toString())
+				.disable(entity.isDisable())
 				.build();
 	}
 }

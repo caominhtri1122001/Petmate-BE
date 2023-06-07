@@ -16,4 +16,5 @@ public class ProviderResponse {
 	private String name;
 	private float price;
 	private String sitterId;
+	private boolean disable;
 }

@@ -81,4 +81,12 @@ public class ProviderController {
 	public ResponseEntity<Boolean> deleteService(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(providerService.removeService(id));
 	}
+
+	@Operation(summary = "api to enable service")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to enable service", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+	@GetMapping(path = "/enable/{id}")
+	public ResponseEntity<Boolean> enableService(@PathVariable String id) throws ResponseException {
+		return ResponseEntity.ok(providerService.enableService(id));
+	}
 }
