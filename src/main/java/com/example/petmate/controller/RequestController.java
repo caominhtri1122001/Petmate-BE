@@ -5,6 +5,7 @@ import com.example.petmate.exception.ResponseException;
 import com.example.petmate.model.request.CreateRequest;
 import com.example.petmate.model.response.DetailRequestResponse;
 import com.example.petmate.model.response.RequestResponse;
+import com.example.petmate.model.response.SchedulesResponse;
 import com.example.petmate.service.request.RequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -57,11 +58,43 @@ public class RequestController {
 		return ResponseEntity.ok(requestService.getListRequestBySitterId(id));
 	}
 
+	@Operation(summary = "api to get schedules by sitter id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get schedules by sitter id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SchedulesResponse.class)) }) })
+	@GetMapping("/schedules/{id}")
+	public ResponseEntity<List<SchedulesResponse>> getListSchedulesBySitter(@PathVariable String id) throws ResponseException {
+		return ResponseEntity.ok(requestService.getSchedules(id));
+	}
+
 	@Operation(summary = "api to get request by id")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get request by id", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = DetailRequestResponse.class)) }) })
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<DetailRequestResponse> viewDetailRequest(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(requestService.viewDetailRequest(id));
+	}
+
+	@Operation(summary = "api to accept request by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to accept request by id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+	@GetMapping("/accept/{id}")
+	public boolean acceptRequest(@PathVariable String id) throws ResponseException {
+		return requestService.acceptRequest(id);
+	}
+
+	@Operation(summary = "api to decline request by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to decline request by id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+	@GetMapping("/decline/{id}")
+	public boolean declineRequest(@PathVariable String id) throws ResponseException {
+		return requestService.declineRequest(id);
+	}
+
+	@Operation(summary = "api to done request by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to done request by id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+	@GetMapping("/done/{id}")
+	public boolean doneRequest(@PathVariable String id) throws ResponseException {
+		return requestService.doneRequest(id);
 	}
 }

@@ -4,9 +4,9 @@ import com.example.petmate.entity.Request;
 import com.example.petmate.model.request.CreateRequest;
 import com.example.petmate.model.response.DetailRequestResponse;
 import com.example.petmate.model.response.RequestResponse;
+import com.example.petmate.model.response.SchedulesResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface RequestService {
 	boolean createRequest(CreateRequest request);
@@ -16,4 +16,12 @@ public interface RequestService {
 	List<RequestResponse> getListRequestBySitterId(String sitterId);
 
 	DetailRequestResponse viewDetailRequest(String requestId);
+
+	boolean acceptRequest(String requestId);
+
+	boolean declineRequest(String requestId);
+
+	boolean doneRequest(String requestId);
+
+	List<SchedulesResponse> getSchedules(String sitterId);
 }

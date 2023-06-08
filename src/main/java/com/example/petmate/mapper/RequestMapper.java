@@ -5,9 +5,11 @@ import com.example.petmate.entity.Request;
 import com.example.petmate.model.request.CreateRequest;
 import com.example.petmate.model.response.DetailRequestResponse;
 import com.example.petmate.model.response.RequestResponse;
+import com.example.petmate.model.response.SchedulesResponse;
 import com.example.petmate.utils.TimeUtils;
 import org.mapstruct.Mapper;
 
+import java.util.List;
 import java.util.UUID;
 
 @Mapper
@@ -62,6 +64,15 @@ public interface RequestMapper {
 				.startTime(entity.getStartTime().toString())
 				.endTime(entity.getEndTime().toString())
 				.address(entity.getAddress())
+				.message(entity.getMessage())
+				.build();
+	}
+
+	static SchedulesResponse toSchedulesResponse(Request entity, String petName, String serviceName) {
+		return SchedulesResponse.builder()
+				.title(serviceName + " with " + petName)
+				.start(entity.getStartDate()+"T"+entity.getStartTime())
+				.end(entity.getEndDate()+"T"+entity.getEndTime())
 				.message(entity.getMessage())
 				.build();
 	}

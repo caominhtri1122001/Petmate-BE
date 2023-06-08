@@ -1,6 +1,7 @@
 package com.example.petmate.service.request;
 
 import com.example.petmate.constant.ResponseCodes;
+import com.example.petmate.constant.StatusType;
 import com.example.petmate.entity.Provider;
 import com.example.petmate.entity.Request;
 import com.example.petmate.entity.User;
@@ -9,6 +10,7 @@ import com.example.petmate.mapper.RequestMapper;
 import com.example.petmate.model.request.CreateRequest;
 import com.example.petmate.model.response.DetailRequestResponse;
 import com.example.petmate.model.response.RequestResponse;
+import com.example.petmate.model.response.SchedulesResponse;
 import com.example.petmate.repository.PetRepository;
 import com.example.petmate.repository.ProviderRepository;
 import com.example.petmate.repository.RequestRepository;
@@ -103,5 +105,52 @@ public class RequestServiceImpl implements RequestService {
 		String name = provider.get().getName();
 		float price = provider.get().getPrice();
 		return RequestMapper.toDetailResponse(request.get(), name, price);
+	}
+
+	@Override
+	public boolean acceptRequest(String requestId) {
+		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
+		if(request.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		request.get().setStatus(StatusType.ACCEPT.getType());
+		requestRepository.save(request.get());
+		return true;
+	}
+
+	@Override
+	public boolean declineRequest(String requestId) {
+		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
+		if(request.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		request.get().setStatus(StatusType.CANCEL.getType());
+		requestRepository.save(request.get());
+		return true;
+	}
+
+	@Override
+	public boolean doneRequest(String requestId) {
+		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
+		if(request.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		request.get().setStatus(StatusType.DONE.getType());
+		requestRepository.save(request.get());
+		return true;
+	}
+
+	@Override
+	public List<SchedulesResponse> getSchedules(String sitterId) {
+		List<SchedulesResponse> result = new ArrayList<>();
+		List<Request> requests = requestRepository.findBySitterId(UUID.fromString(sitterId));
+		requests.forEach(request -> {
+			if(request.getStatus().equals(StatusType.ACCEPT.getType())) {
+				String serviceName = providerRepository.findById(request.getServiceId()).get().getName();
+				String petName = petRepository.findById(request.getPetId()).get().getName();
+				result.add(RequestMapper.toSchedulesResponse(request,petName,serviceName));
+			}
+		});
+		return result;
 	}
 }
