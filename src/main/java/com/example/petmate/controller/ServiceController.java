@@ -12,13 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -45,7 +39,7 @@ public class ServiceController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to create service", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ServiceRequest.class)) }) })
 	@PostMapping
-	public ResponseEntity<StoreServiceDto> createService(ServiceRequest request) throws ResponseException {
+	public ResponseEntity<StoreServiceDto> createService(@RequestBody ServiceRequest request) throws ResponseException {
 		return ResponseEntity.ok(storeService.createService(request));
 	}
 
@@ -53,7 +47,7 @@ public class ServiceController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update service", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ServiceRequest.class)) }) })
 	@PatchMapping(path = "/{id}")
-	public ResponseEntity<Boolean> updateService(@PathVariable String id,ServiceRequest request) throws ResponseException {
+	public ResponseEntity<Boolean> updateService(@PathVariable String id,@ModelAttribute ServiceRequest request) throws ResponseException {
 		return ResponseEntity.ok(storeService.updateService(id,request));
 	}
 
