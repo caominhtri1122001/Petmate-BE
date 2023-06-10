@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class PostRequest {
 	private String title;
 	private String content;
-	private String image;
+	private MultipartFile image;
 	private String author;
 	private List<String> tags;
 }

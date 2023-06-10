@@ -20,11 +20,11 @@ public interface PostMapper {
 				.build();
 	}
 
-	static Post toEntity(PostRequest request) {
+	static Post toEntity(PostRequest request, String image) {
 		return Post.builder()
 				.title(request.getTitle())
 				.content(request.getContent())
-				.image(request.getImage())
+				.image(image)
 				.userId(UUID.fromString(request.getAuthor()))
 				.build();
 	}
