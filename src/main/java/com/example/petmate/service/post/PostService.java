@@ -4,14 +4,15 @@ import com.example.petmate.entity.Post;
 import com.example.petmate.model.request.PostRequest;
 import com.example.petmate.model.response.PostResponse;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface PostService {
 	List<Post> getAllPosts();
 
-	PostResponse createPost(PostRequest request);
+	PostResponse createPost(PostRequest request) throws IOException;
 
-	boolean updatePost(String postId, PostRequest request);
+	boolean updatePost(String postId, PostRequest request) throws IOException;
 
 	Post getPostById(String postId);
 

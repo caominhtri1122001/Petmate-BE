@@ -13,14 +13,14 @@ import com.example.petmate.repository.CategoryRepository;
 import com.example.petmate.repository.PostRepository;
 import com.example.petmate.repository.TagRepository;
 import com.example.petmate.repository.UserRepository;
+import com.example.petmate.service.third_party.firebase.FirebaseStorageService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -34,12 +34,15 @@ public class PostServiceImpl implements PostService {
 
 	private final CategoryRepository categoryRepository;
 
+	private final FirebaseStorageService firebaseStorageService;
+
 	public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, TagRepository tagRepository,
-			CategoryRepository categoryRepository) {
+						   CategoryRepository categoryRepository, FirebaseStorageService firebaseStorageService) {
 		this.postRepository = postRepository;
 		this.userRepository = userRepository;
 		this.tagRepository = tagRepository;
 		this.categoryRepository = categoryRepository;
+		this.firebaseStorageService = firebaseStorageService;
 	}
 
 	@Override
@@ -48,8 +51,12 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public PostResponse createPost(PostRequest request) {
-		Post post = postRepository.save(PostMapper.toEntity(request));
+	public PostResponse createPost(PostRequest request) throws IOException {
+		String image = "";
+		if (request.getImage() != null) {
+			image = firebaseStorageService.uploadImage(request.getImage());
+		}
+		Post post = postRepository.save(PostMapper.toEntity(request, image));
 		Optional<User> user = userRepository.findById(post.getUserId());
 		List<Tag> tags = tagRepository.findAll();
 		request.getTags().forEach(tag -> {
@@ -66,14 +73,20 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public boolean updatePost(String postId, PostRequest request) {
+	public boolean updatePost(String postId, PostRequest request) throws IOException {
+		String image = "";
+		if (request.getImage() != null) {
+			image = firebaseStorageService.uploadImage(request.getImage());
+		}
 		Optional<Post> post = postRepository.findById(UUID.fromString(postId));
 		if (post.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
 		post.get().setTitle(request.getTitle());
 		post.get().setContent(request.getContent());
-		post.get().setImage(request.getImage());
+		if (image != "") {
+			post.get().setImage(image);
+		}
 		postRepository.save(post.get());
 		return true;
 	}
