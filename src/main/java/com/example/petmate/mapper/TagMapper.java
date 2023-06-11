@@ -16,6 +16,7 @@ public interface TagMapper {
 
 	static TagDto toTagDto(Tag tag) {
 		return TagDto.builder()
+				.tagId(tag.getId().toString())
 				.name(tag.getName()).build();
 	}
 }

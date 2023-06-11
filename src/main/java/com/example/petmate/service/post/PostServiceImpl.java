@@ -1,6 +1,7 @@
 package com.example.petmate.service.post;
 
 import com.example.petmate.constant.ResponseCodes;
+import com.example.petmate.dto.PostDto;
 import com.example.petmate.entity.Category;
 import com.example.petmate.entity.Post;
 import com.example.petmate.entity.Tag;
@@ -18,9 +19,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -37,7 +40,7 @@ public class PostServiceImpl implements PostService {
 	private final FirebaseStorageService firebaseStorageService;
 
 	public PostServiceImpl(PostRepository postRepository, UserRepository userRepository, TagRepository tagRepository,
-						   CategoryRepository categoryRepository, FirebaseStorageService firebaseStorageService) {
+			CategoryRepository categoryRepository, FirebaseStorageService firebaseStorageService) {
 		this.postRepository = postRepository;
 		this.userRepository = userRepository;
 		this.tagRepository = tagRepository;
@@ -46,8 +49,17 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> getAllPosts() {
-		return postRepository.findAll();
+	public List<PostDto> getAllPosts() {
+		List<Post> posts = postRepository.findAll();
+		return posts.stream().map(post -> {
+			Optional<User> user = userRepository.findById(post.getUserId());
+			List<String> tags = new ArrayList<>();
+			List<Category> tagsOfBlogs = categoryRepository.findByPostId(post.getId());
+			tagsOfBlogs.forEach(tag -> {
+				tags.add(tagRepository.findById(tag.getTagId()).get().getName());
+			});
+			return PostMapper.toDto(post, user.get(), tags);
+		}).collect(Collectors.toList());
 	}
 
 	@Override
@@ -112,12 +124,21 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public Post getPostById(String postId) {
+	public PostDto getPostById(String postId) {
+		List<String> tags = new ArrayList<>();
 		Optional<Post> post = postRepository.findById(UUID.fromString(postId));
 		if (post.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
-		return post.get();
+		Optional<User> user = userRepository.findById(post.get().getUserId());
+		if (user.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		List<Category> tagsOfBlogs = categoryRepository.findByPostId(post.get().getId());
+		tagsOfBlogs.forEach(tag -> {
+			tags.add(tagRepository.findById(tag.getTagId()).get().getName());
+		});
+		return PostMapper.toDto(post.get(), user.get(), tags);
 	}
 
 	@Override
