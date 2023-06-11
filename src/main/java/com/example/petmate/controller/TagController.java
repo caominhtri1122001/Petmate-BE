@@ -32,8 +32,8 @@ public class TagController extends BaseController {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = TagDto.class)) }) })
 	@GetMapping
 	public ResponseEntity<List<TagDto>> getAllTags(HttpServletRequest request) throws ResponseException {
-		String userId = checkUser(request);
-		log.info(userId);
+//		String userId = checkUser(request);
+//		log.info(userId);
 		return ResponseEntity.ok(tagService.getAllTags());
 	}
 

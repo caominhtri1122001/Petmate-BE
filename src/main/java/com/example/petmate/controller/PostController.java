@@ -1,5 +1,6 @@
 package com.example.petmate.controller;
 
+import com.example.petmate.dto.PostDto;
 import com.example.petmate.entity.Post;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.model.request.PostRequest;
@@ -31,7 +32,7 @@ public class PostController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all posts", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Post.class)) }) })
 	@GetMapping
-	public ResponseEntity<List<Post>> getAllPosts() throws ResponseException {
+	public ResponseEntity<List<PostDto>> getAllPosts() throws ResponseException {
 		return ResponseEntity.ok(postService.getAllPosts());
 	}
 
@@ -55,7 +56,7 @@ public class PostController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to find post by id", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
 	@GetMapping("/{id}")
-	public ResponseEntity<Post> getPost(@PathVariable String id) throws ResponseException {
+	public ResponseEntity<PostDto> getPost(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(postService.getPostById(id));
 	}
 

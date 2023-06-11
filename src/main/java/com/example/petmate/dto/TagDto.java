@@ -12,5 +12,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TagDto {
+	private String tagId;
 	private String name;
 }
