@@ -100,6 +100,26 @@ public class PostServiceImpl implements PostService {
 			post.get().setImage(image);
 		}
 		postRepository.save(post.get());
+
+		List<Category> categories = categoryRepository.findTagsOfPost(UUID.fromString(postId));
+		if (!categories.isEmpty()){
+			categories.forEach(category -> {
+				categoryRepository.deleteById(category.getId());
+			});
+		}
+
+		List<Tag> tags = tagRepository.findAll();
+		request.getTags().forEach(tag -> {
+			Tag tagExists = tags.stream().filter(t -> t.getName().equalsIgnoreCase(tag)).findFirst().orElse(null);
+			if (tagExists != null) {
+				createCategory(post.get().getId(), tagExists.getId());
+			} else {
+				Tag tagEntity = Tag.builder().name(tag).build();
+				tagRepository.save(tagEntity);
+				createCategory(post.get().getId(), tagEntity.getId());
+			}
+		});
+
 		return true;
 	}
 
@@ -127,6 +147,14 @@ public class PostServiceImpl implements PostService {
 		if (post.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
+
+		List<Category> categories = categoryRepository.findTagsOfPost(UUID.fromString(postId));
+		if (!categories.isEmpty()){
+			categories.forEach(category -> {
+				categoryRepository.deleteById(category.getId());
+			});
+		}
+
 		postRepository.deleteById(UUID.fromString(postId));
 		return true;
 	}
