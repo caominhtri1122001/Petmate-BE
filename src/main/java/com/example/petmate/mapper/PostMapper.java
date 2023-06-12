@@ -45,6 +45,7 @@ public interface PostMapper {
 				.comments(entity.getComments())
 				.likes(entity.getLikes())
 				.userId(entity.getUserId().toString())
+				.userImage(userEntity.getUserImgUrl())
 				.name(userEntity.getFirstName() + " " + userEntity.getLastName())
 				.mail(userEntity.getEmail())
 				.phone(userEntity.getPhone())

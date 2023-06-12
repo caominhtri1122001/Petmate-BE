@@ -34,8 +34,6 @@ public class PetController {
             @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = PetRequest.class)) }) })
     @PostMapping
     public ResponseEntity<PetResponse> createPet(@ModelAttribute PetRequest request) throws ResponseException, IOException {
-        log.info("adding new pet");
-        log.info(request.getName());
         return ResponseEntity.ok(petService.createPet(request));
     }
 

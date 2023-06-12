@@ -130,6 +130,8 @@ public class PostServiceImpl implements PostService {
 		if (post.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
+		post.get().setViews(post.get().getViews() + 1);
+		postRepository.save(post.get());
 		Optional<User> user = userRepository.findById(post.get().getUserId());
 		if (user.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);

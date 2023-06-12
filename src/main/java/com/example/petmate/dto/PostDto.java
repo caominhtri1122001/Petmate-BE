@@ -25,6 +25,7 @@ public class PostDto {
 	private int comments;
 	private int likes;
 	private String userId;
+	private String userImage;
 	private String name;
 	private String mail;
 	private String phone;
