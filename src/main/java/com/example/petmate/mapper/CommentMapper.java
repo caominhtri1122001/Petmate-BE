@@ -1,8 +1,10 @@
 package com.example.petmate.mapper;
 
 import com.example.petmate.entity.Comment;
+import com.example.petmate.entity.User;
 import com.example.petmate.model.request.CommentRequest;
 import com.example.petmate.model.response.CommentResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -13,31 +15,36 @@ import java.util.stream.Collectors;
 @Mapper
 public interface CommentMapper {
 	static Comment toEntity(CommentRequest request) {
-		String parentId;
+		UUID parentId;
 		if(Objects.isNull(request.getCommentId())) {
 			parentId = null;
 		} else  {
-			parentId = request.getCommentId();
+			parentId = UUID.fromString(request.getCommentId());
 		}
 		return Comment.builder()
 				.content(request.getContent())
-				.commentId(UUID.fromString(parentId))
+				.commentId(parentId)
 				.userId(UUID.fromString(request.getUserId()))
 				.postId(UUID.fromString(request.getPostId()))
 				.build();
 	}
 
-	static List<CommentResponse> toListResponse(List<Comment> entities) {
-		return entities.stream().map(CommentMapper::toResponse).collect(Collectors.toList());
-	}
-
-	static CommentResponse toResponse(Comment entity) {
+	static CommentResponse toResponse(Comment entity, User userEntity) {
+		String parentCommentId;
+		if(Objects.isNull(entity.getCommentId())) {
+			parentCommentId = null;
+		} else {
+			parentCommentId = entity.getCommentId().toString();
+		}
 		return CommentResponse.builder()
 				.commentId(entity.getId().toString())
 				.content(entity.getContent())
 				.userId(entity.getUserId().toString())
+				.name(userEntity.getFirstName() + " " + userEntity.getLastName())
+				.avatar(userEntity.getUserImgUrl())
 				.postId(entity.getPostId().toString())
-				.parentCommentId(entity.getCommentId().toString())
+				.parentCommentId(parentCommentId)
+				.createdAt(entity.getCreatedAt().toString())
 				.build();
 	}
 }

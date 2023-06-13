@@ -14,6 +14,8 @@ import lombok.experimental.SuperBuilder;
 public class CommentResponse {
 	private String commentId;
 	private String userId;
+	private String name;
+	private String avatar;
 	private String postId;
 	private String content;
 	private String createdAt;

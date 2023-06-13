@@ -40,7 +40,7 @@ public class CommentController {
 	@Operation(summary = "api to get all comment by postid")
 	@ApiResponses(value = {
 			@ApiResponse(responseCode = "200", description = "api to get all comment by postid", content = {
-					@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CommentRequest.class)) }) })
+					@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CommentResponse.class)) }) })
 	@GetMapping("/{id}")
 	public ResponseEntity<List<CommentResponse>> createComment(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(commentService.getCommentsOfBlog(id));
