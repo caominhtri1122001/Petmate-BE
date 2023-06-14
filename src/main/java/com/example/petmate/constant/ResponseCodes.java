@@ -20,7 +20,8 @@ public enum ResponseCodes {
 
 	PM_WRONG_OLD_PASSWORD("12", "Wrong old password!!"),
 
-	PM_ALREADY_HAS_SERVICE("13", "You already have this service!!");
+	PM_ALREADY_HAS_SERVICE("13", "You already have this service!!"),
+	PM_NOT_AVAILABLE("14", "The requested time conflicts with an existing requests.");
 	private String code;
 	private String message;
 

@@ -6,8 +6,8 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ServiceType {
-	VIP("VIP"),
-	NORMAL("NORMAL");
+	PER_SERVING("PER SERVING"),
+	PET_DAY("PER DAY");
 
 	private final String type;
 }

@@ -22,6 +22,9 @@ public class Provider extends BaseEntity {
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "service_type")
+	private String serviceType;
+
 	@Column(name = "price")
 	private float price;
 

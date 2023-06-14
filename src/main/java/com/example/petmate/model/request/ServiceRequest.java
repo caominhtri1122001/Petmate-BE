@@ -1,6 +1,5 @@
 package com.example.petmate.model.request;
 
-import com.example.petmate.constant.ServiceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +12,6 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceRequest {
-	private	String name;
+	private String name;
+	private String serviceType;
 }

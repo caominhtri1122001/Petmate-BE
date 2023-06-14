@@ -19,10 +19,13 @@ import com.example.petmate.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -98,7 +101,7 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	public DetailRequestResponse viewDetailRequest(String requestId) {
 		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
-		if(request.isEmpty()) {
+		if (request.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
 		Optional<Provider> provider = providerRepository.findById(request.get().getServiceId());
@@ -110,8 +113,15 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	public boolean acceptRequest(String requestId) {
 		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
-		if(request.isEmpty()) {
+		if (request.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		List<Request> requests = requestRepository.findBySitterId(request.get().getSitterId());
+		List<Request> requestSchedules = requests.stream()
+				.filter(rq -> StatusType.ACCEPT.getType().equals(rq.getStatus()))
+				.collect(Collectors.toList());
+		if (validateRequest(request.get(), requestSchedules)) {
+			return false;
 		}
 		request.get().setStatus(StatusType.ACCEPT.getType());
 		requestRepository.save(request.get());
@@ -121,7 +131,7 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	public boolean declineRequest(String requestId) {
 		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
-		if(request.isEmpty()) {
+		if (request.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
 		request.get().setStatus(StatusType.CANCEL.getType());
@@ -132,7 +142,7 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	public boolean doneRequest(String requestId) {
 		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
-		if(request.isEmpty()) {
+		if (request.isEmpty()) {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
 		request.get().setStatus(StatusType.DONE.getType());
@@ -145,12 +155,31 @@ public class RequestServiceImpl implements RequestService {
 		List<SchedulesResponse> result = new ArrayList<>();
 		List<Request> requests = requestRepository.findBySitterId(UUID.fromString(sitterId));
 		requests.forEach(request -> {
-			if(request.getStatus().equals(StatusType.ACCEPT.getType())) {
+			if (request.getStatus().equals(StatusType.ACCEPT.getType())) {
 				String serviceName = providerRepository.findById(request.getServiceId()).get().getName();
 				String petName = petRepository.findById(request.getPetId()).get().getName();
-				result.add(RequestMapper.toSchedulesResponse(request,petName,serviceName));
+				result.add(RequestMapper.toSchedulesResponse(request, petName, serviceName));
 			}
 		});
 		return result;
+	}
+
+	private boolean validateRequest(Request newRequest, List<Request> oldRequest) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		LocalDateTime startDateTime = LocalDateTime.parse(newRequest.getStartDate() + " " + newRequest.getStartTime(),
+				formatter);
+		LocalDateTime endDateTime = LocalDateTime.parse(newRequest.getEndDate() + " " + newRequest.getEndTime(),
+				formatter);
+		for (Request existingRequest : oldRequest) {
+			LocalDateTime existingStartDateTime = LocalDateTime.parse(
+					existingRequest.getStartDate() + " " + existingRequest.getStartTime(), formatter);
+			LocalDateTime existingEndDateTime = LocalDateTime.parse(
+					existingRequest.getEndDate() + " " + existingRequest.getEndTime(), formatter);
+			if ((startDateTime.isAfter(existingStartDateTime) && startDateTime.isBefore(existingEndDateTime)) || (
+					endDateTime.isAfter(existingStartDateTime) && endDateTime.isBefore(existingEndDateTime))) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

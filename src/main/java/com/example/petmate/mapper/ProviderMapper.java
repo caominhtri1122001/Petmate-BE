@@ -14,6 +14,7 @@ public interface ProviderMapper {
 	static Provider toEntity(ProviderRequest request) {
 		return Provider.builder()
 				.name(request.getName())
+				.serviceType(request.getServiceType())
 				.price(request.getPrice())
 				.sitterId(UUID.fromString(request.getSitterId()))
 				.disable(false)
@@ -28,6 +29,7 @@ public interface ProviderMapper {
 		return ProviderResponse.builder()
 				.id(entity.getId().toString())
 				.name(entity.getName())
+				.serviceType(entity.getServiceType())
 				.price(entity.getPrice())
 				.sitterId(entity.getSitterId().toString())
 				.disable(entity.isDisable())

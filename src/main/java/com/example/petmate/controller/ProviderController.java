@@ -1,10 +1,8 @@
 package com.example.petmate.controller;
 
-import com.example.petmate.dto.StoreServiceDto;
 import com.example.petmate.entity.Provider;
 import com.example.petmate.exception.ResponseException;
 import com.example.petmate.model.request.ProviderRequest;
-import com.example.petmate.model.request.ServiceRequest;
 import com.example.petmate.model.response.ProviderResponse;
 import com.example.petmate.service.provider.ProviderService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -43,10 +41,12 @@ public class ProviderController {
 	}
 
 	@Operation(summary = "api to get all services by userid")
-	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all services by userid", content = {
-			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProviderResponse.class)) }) })
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "api to get all services by userid", content = {
+					@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = ProviderResponse.class)) }) })
 	@GetMapping("/services/user/{id}")
-	public ResponseEntity<List<ProviderResponse>> getAllServicesByUserId(@PathVariable String id) throws ResponseException {
+	public ResponseEntity<List<ProviderResponse>> getAllServicesByUserId(@PathVariable String id)
+			throws ResponseException {
 		return ResponseEntity.ok(providerService.getListServiceByUser(id));
 	}
 
@@ -62,8 +62,8 @@ public class ProviderController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to update service", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Provider.class)) }) })
 	@PatchMapping(path = "/{id}")
-	public ResponseEntity<Boolean> updateService(@PathVariable String id,float price) throws ResponseException {
-		return ResponseEntity.ok(providerService.updateServiceForSitter(id,price));
+	public ResponseEntity<Boolean> updateService(@PathVariable String id, float price) throws ResponseException {
+		return ResponseEntity.ok(providerService.updateServiceForSitter(id, price));
 	}
 
 	@Operation(summary = "api to get service by id")

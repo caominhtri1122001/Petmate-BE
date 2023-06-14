@@ -1,6 +1,5 @@
 package com.example.petmate.dto;
 
-import com.example.petmate.constant.ServiceType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,5 +13,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class StoreServiceDto {
 	private String id;
-	private	String name;
+	private String name;
+	private String serviceType;
 }

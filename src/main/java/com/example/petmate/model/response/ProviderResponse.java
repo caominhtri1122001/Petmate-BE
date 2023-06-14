@@ -14,6 +14,7 @@ import lombok.experimental.SuperBuilder;
 public class ProviderResponse {
 	private String id;
 	private String name;
+	private String serviceType;
 	private float price;
 	private String sitterId;
 	private boolean disable;

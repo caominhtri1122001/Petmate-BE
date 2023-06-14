@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 public class ProviderRequest {
 	private String name;
+	private String serviceType;
 	private float price;
 	private String sitterId;
 }
