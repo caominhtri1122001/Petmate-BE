@@ -26,12 +26,13 @@ public interface RequestMapper {
 				.endTime(TimeUtils.convertStringToTime(request.getEndTime()))
 				.address(request.getAddress())
 				.message(request.getMessage())
+				.price(request.getPrice())
 				.status(StatusType.PENDING.getType())
 				.build();
 	}
 
 	static RequestResponse toResponse(Request entity, String petName, String sitterName, String sitterAvatar,
-			String serviceName, float price, String customerName, String customerImage) {
+									  String serviceName, float price, String customerName, String customerImage) {
 		return RequestResponse.builder()
 				.requestId(entity.getId().toString())
 				.userId(entity.getUserId().toString())
@@ -44,7 +45,7 @@ public interface RequestMapper {
 				.petName(petName)
 				.serviceId(entity.getServiceId().toString())
 				.serviceName(serviceName)
-				.price(price)
+				.price(entity.getPrice())
 				.startDate(entity.getStartDate().toString())
 				.endDate(entity.getEndDate().toString())
 				.startTime(entity.getStartTime().toString())
@@ -58,7 +59,7 @@ public interface RequestMapper {
 	static DetailRequestResponse toDetailResponse(Request entity, String name, float price) {
 		return DetailRequestResponse.builder()
 				.serviceName(name)
-				.price(price)
+				.price(entity.getPrice())
 				.startDate(entity.getStartDate().toString())
 				.endDate(entity.getEndDate().toString())
 				.startTime(entity.getStartTime().toString())
