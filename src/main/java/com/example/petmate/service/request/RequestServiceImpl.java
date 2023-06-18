@@ -19,6 +19,7 @@ import com.example.petmate.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -52,7 +53,17 @@ public class RequestServiceImpl implements RequestService {
 
 	@Override
 	public boolean createRequest(CreateRequest request) {
-		requestRepository.save(RequestMapper.toEntity(request));
+		Request newRequest = RequestMapper.toEntity(request);
+
+		List<Request> requests = requestRepository.findByPetId(newRequest.getPetId());
+		List<Request> requestSchedules = requests.stream()
+				.filter(rq -> StatusType.PENDING.getType().equals(rq.getStatus()))
+				.collect(Collectors.toList());
+		if (validateRequest(newRequest, requestSchedules)) {
+			return false;
+		}
+
+		requestRepository.save(newRequest);
 		return true;
 	}
 
@@ -137,6 +148,28 @@ public class RequestServiceImpl implements RequestService {
 		request.get().setStatus(StatusType.CANCEL.getType());
 		requestRepository.save(request.get());
 		return true;
+	}
+
+	@Override
+	public boolean cancelRequest(String requestId) {
+		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
+		if (request.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		if (validateDate(request.get())) {
+			return false;
+		}
+
+		request.get().setStatus(StatusType.CANCEL.getType());
+		requestRepository.save(request.get());
+		return true;
+	}
+
+	private boolean validateDate(Request request) {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime dateTime = LocalDateTime.parse(request.getStartDate() + "T" + request.getStartTime());
+		Duration duration = Duration.between(dateTime, now);
+		return duration.abs().toHours() <= 2;
 	}
 
 	@Override

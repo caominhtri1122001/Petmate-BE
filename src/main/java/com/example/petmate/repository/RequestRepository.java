@@ -13,4 +13,6 @@ public interface RequestRepository extends JpaRepository<Request, UUID> {
 	List<Request> findByUserId(UUID userId);
 
 	List<Request> findBySitterId(UUID sitterId);
+
+	List<Request> findByPetId(UUID petId);
 }

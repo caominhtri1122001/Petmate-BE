@@ -22,4 +22,5 @@ public class CreateRequest {
 	private String endTime;
 	private String message;
 	private String address;
+	private float price;
 }

@@ -90,6 +90,14 @@ public class RequestController {
 		return requestService.declineRequest(id);
 	}
 
+	@Operation(summary = "api to cancel request by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to cancel request by id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+	@GetMapping("/cancel/{id}")
+	public boolean cancelRequest(@PathVariable String id) throws ResponseException {
+		return requestService.cancelRequest(id);
+	}
+
 	@Operation(summary = "api to done request by id")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to done request by id", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })

@@ -21,6 +21,8 @@ public interface RequestService {
 
 	boolean declineRequest(String requestId);
 
+	boolean cancelRequest(String requestId);
+
 	boolean doneRequest(String requestId);
 
 	List<SchedulesResponse> getSchedules(String sitterId);
