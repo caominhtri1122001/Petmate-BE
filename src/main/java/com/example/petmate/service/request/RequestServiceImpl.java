@@ -165,13 +165,6 @@ public class RequestServiceImpl implements RequestService {
 		return true;
 	}
 
-	private boolean validateDate(Request request) {
-		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime dateTime = LocalDateTime.parse(request.getStartDate() + "T" + request.getStartTime());
-		Duration duration = Duration.between(dateTime, now);
-		return duration.abs().toHours() <= 2;
-	}
-
 	@Override
 	public boolean doneRequest(String requestId) {
 		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
@@ -197,6 +190,13 @@ public class RequestServiceImpl implements RequestService {
 		return result;
 	}
 
+	private boolean validateDate(Request request) {
+		LocalDateTime now = LocalDateTime.now();
+		LocalDateTime dateTime = LocalDateTime.parse(request.getStartDate() + "T" + request.getStartTime());
+		Duration duration = Duration.between(dateTime, now);
+		return duration.abs().toHours() <= 2;
+	}
+
 	private boolean validateRequest(Request newRequest, List<Request> oldRequest) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		LocalDateTime startDateTime = LocalDateTime.parse(newRequest.getStartDate() + " " + newRequest.getStartTime(),
@@ -209,10 +209,10 @@ public class RequestServiceImpl implements RequestService {
 			LocalDateTime existingEndDateTime = LocalDateTime.parse(
 					existingRequest.getEndDate() + " " + existingRequest.getEndTime(), formatter);
 			if ((startDateTime.isAfter(existingStartDateTime) && startDateTime.isBefore(existingEndDateTime)) || (
-					endDateTime.isAfter(existingStartDateTime) && endDateTime.isBefore(existingEndDateTime))) {
+					endDateTime.isAfter(existingStartDateTime) && endDateTime.isBefore(existingEndDateTime)) ||
+			(startDateTime.isEqual(existingStartDateTime) && endDateTime.isEqual(existingEndDateTime))) {
 				return true;
 			}
-		}
-		return false;
+		} return false;
 	}
 }
