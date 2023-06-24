@@ -67,6 +67,14 @@ openai:
   base-url: ${OPEN_AI_URL}
   key: ${OPEN_AI_API_KEY}
 
+# VNPAY
+vnpay:
+  base-url: ${VNP_URL}
+  code: ${VNP_CODE}
+  secret: ${VNP_HASH_SECRET}
+  return-url: ${VNP_RETURN_URL}
+
+
 # Config log root
 #logging:
 #  level:

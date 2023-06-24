@@ -36,10 +36,10 @@ public class RequestController {
 
 	@Operation(summary = "api to send a request")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to send a request", content = {
-			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = CreateRequest.class)) }) })
+			@Content(schema = @Schema(implementation = CreateRequest.class)) }) })
 	@PostMapping
-	public boolean sendRequest(@RequestBody CreateRequest request) throws ResponseException {
-		return requestService.createRequest(request);
+	public ResponseEntity<?> sendRequest(@RequestBody CreateRequest request) throws ResponseException {
+		return ResponseEntity.ok(requestService.createRequest(request));
 	}
 
 	@Operation(summary = "api to get all request by user id")
@@ -72,6 +72,14 @@ public class RequestController {
 	@GetMapping("/detail/{id}")
 	public ResponseEntity<DetailRequestResponse> viewDetailRequest(@PathVariable String id) throws ResponseException {
 		return ResponseEntity.ok(requestService.viewDetailRequest(id));
+	}
+
+	@Operation(summary = "api to pay request by id")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to pay request by id", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE) }) })
+	@GetMapping("/payment/{id}")
+	public boolean payRequest(@PathVariable String id) throws ResponseException {
+		return requestService.payRequest(id);
 	}
 
 	@Operation(summary = "api to accept request by id")

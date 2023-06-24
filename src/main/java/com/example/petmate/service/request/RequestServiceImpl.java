@@ -52,24 +52,24 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
-	public boolean createRequest(CreateRequest request) {
+	public Request createRequest(CreateRequest request) {
 		Request newRequest = RequestMapper.toEntity(request);
 
 		List<Request> requests = requestRepository.findByPetId(newRequest.getPetId());
 		List<Request> requestSchedules = requests.stream()
-				.filter(rq -> StatusType.PENDING.getType().equals(rq.getStatus()))
+				.filter(rq -> StatusType.PENDING.getType().equals(rq.getStatus()) && rq.isValid())
 				.collect(Collectors.toList());
 		if (validateRequest(newRequest, requestSchedules)) {
-			return false;
+			throw new ResponseException(ResponseCodes.PM_NOT_AVAILABLE);
 		}
 
-		requestRepository.save(newRequest);
-		return true;
+		return requestRepository.save(newRequest);
 	}
 
 	@Override
 	public List<RequestResponse> getListRequestByUserId(String userId) {
 		List<Request> requests = requestRepository.findByUserId(UUID.fromString(userId));
+		requests = requests.stream().filter(Request::isValid).collect(Collectors.toList());
 		List<RequestResponse> result = new ArrayList<>();
 		requests.forEach(request -> {
 			String petName = petRepository.findById(request.getPetId()).get().getName();
@@ -91,6 +91,7 @@ public class RequestServiceImpl implements RequestService {
 	@Override
 	public List<RequestResponse> getListRequestBySitterId(String sitterId) {
 		List<Request> requests = requestRepository.findBySitterId(UUID.fromString(sitterId));
+		requests = requests.stream().filter(Request::isValid).collect(Collectors.toList());
 		List<RequestResponse> result = new ArrayList<>();
 		requests.forEach(request -> {
 			String petName = petRepository.findById(request.getPetId()).get().getName();
@@ -129,7 +130,7 @@ public class RequestServiceImpl implements RequestService {
 		}
 		List<Request> requests = requestRepository.findBySitterId(request.get().getSitterId());
 		List<Request> requestSchedules = requests.stream()
-				.filter(rq -> StatusType.ACCEPT.getType().equals(rq.getStatus()))
+				.filter(rq -> StatusType.ACCEPT.getType().equals(rq.getStatus()) && rq.isValid())
 				.collect(Collectors.toList());
 		if (validateRequest(request.get(), requestSchedules)) {
 			return false;
@@ -177,6 +178,17 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
+	public boolean payRequest(String requestId) {
+		Optional<Request> request = requestRepository.findById(UUID.fromString(requestId));
+		if (request.isEmpty()) {
+			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
+		}
+		request.get().setValid(true);
+		requestRepository.save(request.get());
+		return true;
+	}
+
+	@Override
 	public List<SchedulesResponse> getSchedules(String sitterId) {
 		List<SchedulesResponse> result = new ArrayList<>();
 		List<Request> requests = requestRepository.findBySitterId(UUID.fromString(sitterId));
@@ -209,10 +221,11 @@ public class RequestServiceImpl implements RequestService {
 			LocalDateTime existingEndDateTime = LocalDateTime.parse(
 					existingRequest.getEndDate() + " " + existingRequest.getEndTime(), formatter);
 			if ((startDateTime.isAfter(existingStartDateTime) && startDateTime.isBefore(existingEndDateTime)) || (
-					endDateTime.isAfter(existingStartDateTime) && endDateTime.isBefore(existingEndDateTime)) ||
-			(startDateTime.isEqual(existingStartDateTime) && endDateTime.isEqual(existingEndDateTime))) {
+					endDateTime.isAfter(existingStartDateTime) && endDateTime.isBefore(existingEndDateTime)) || (
+					startDateTime.isEqual(existingStartDateTime) && endDateTime.isEqual(existingEndDateTime))) {
 				return true;
 			}
-		} return false;
+		}
+		return false;
 	}
 }

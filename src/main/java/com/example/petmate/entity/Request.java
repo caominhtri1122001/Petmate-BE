@@ -45,6 +45,9 @@ public class Request extends BaseEntity{
 	@Column(name = "price")
 	private float price;
 
+	@Column(name = "valid")
+	private boolean valid;
+
 	@Column(name = "user_id")
 	private UUID userId;
 

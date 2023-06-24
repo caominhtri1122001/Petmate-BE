@@ -9,7 +9,7 @@ import com.example.petmate.model.response.SchedulesResponse;
 import java.util.List;
 
 public interface RequestService {
-	boolean createRequest(CreateRequest request);
+	Request createRequest(CreateRequest request);
 
 	List<RequestResponse> getListRequestByUserId(String userId);
 
@@ -24,6 +24,8 @@ public interface RequestService {
 	boolean cancelRequest(String requestId);
 
 	boolean doneRequest(String requestId);
+
+	boolean payRequest(String requestId);
 
 	List<SchedulesResponse> getSchedules(String sitterId);
 }
