@@ -11,6 +11,6 @@ import java.util.UUID;
 @Repository
 public interface ProviderRepository extends JpaRepository<Provider, UUID> {
 
-	Optional<Provider> findByName(String name);
+	Optional<Provider> findByNameAndSitterId(String name, UUID sitterId);
 	Optional<List<Provider>> findBySitterId(UUID sitterId);
 }

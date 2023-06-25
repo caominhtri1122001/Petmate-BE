@@ -31,7 +31,7 @@ public class ProviderServiceImpl implements ProviderService {
 
 	@Override
 	public boolean createServiceForSitter(ProviderRequest request) {
-		Optional<Provider> entity = providerRepository.findByName(request.getName());
+		Optional<Provider> entity = providerRepository.findByNameAndSitterId(request.getName(), UUID.fromString(request.getSitterId()));
 		if (entity.isPresent()) {
 			throw new ResponseException(ResponseCodes.PM_ALREADY_HAS_SERVICE);
 		}
