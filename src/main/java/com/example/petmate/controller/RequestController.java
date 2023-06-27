@@ -42,6 +42,14 @@ public class RequestController {
 		return ResponseEntity.ok(requestService.createRequest(request));
 	}
 
+	@Operation(summary = "api to get all request")
+	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all request", content = {
+			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Request.class)) }) })
+	@GetMapping("")
+	public ResponseEntity<List<RequestResponse>> getListAllRequest() throws ResponseException {
+		return ResponseEntity.ok(requestService.getListAllRequest());
+	}
+
 	@Operation(summary = "api to get all request by user id")
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get all request by user id", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = Request.class)) }) })

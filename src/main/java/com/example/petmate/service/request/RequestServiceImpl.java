@@ -67,6 +67,28 @@ public class RequestServiceImpl implements RequestService {
 	}
 
 	@Override
+	public List<RequestResponse> getListAllRequest() {
+		List<Request> requests = requestRepository.findAll();
+		requests = requests.stream().filter(Request::isValid).collect(Collectors.toList());
+		List<RequestResponse> result = new ArrayList<>();
+		requests.forEach(request -> {
+			String petName = petRepository.findById(request.getPetId()).get().getName();
+			String serviceName = providerRepository.findById(request.getServiceId()).get().getName();
+			float price = providerRepository.findById(request.getServiceId()).get().getPrice();
+			String getUserId = sitterRepository.findById(request.getSitterId()).get().getUserId().toString();
+			Optional<User> userEntity = userRepository.findById(UUID.fromString(getUserId));
+			String sitterName = userEntity.get().getFirstName() + " " + userEntity.get().getLastName();
+			String sitterAvatar = userEntity.get().getUserImgUrl();
+			Optional<User> customer = userRepository.findById(request.getUserId());
+			String customerName = customer.get().getFirstName() + customer.get().getLastName();
+			String customerAvatar = customer.get().getUserImgUrl();
+			result.add(RequestMapper.toResponse(request, petName, sitterName, sitterAvatar, serviceName, price,
+					customerName, customerAvatar));
+		});
+		return result;
+	}
+
+	@Override
 	public List<RequestResponse> getListRequestByUserId(String userId) {
 		List<Request> requests = requestRepository.findByUserId(UUID.fromString(userId));
 		requests = requests.stream().filter(Request::isValid).collect(Collectors.toList());

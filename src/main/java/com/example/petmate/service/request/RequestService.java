@@ -11,6 +11,8 @@ import java.util.List;
 public interface RequestService {
 	Request createRequest(CreateRequest request);
 
+	List<RequestResponse> getListAllRequest();
+
 	List<RequestResponse> getListRequestByUserId(String userId);
 
 	List<RequestResponse> getListRequestBySitterId(String sitterId);
