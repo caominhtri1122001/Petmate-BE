@@ -24,7 +24,7 @@ public interface SitterMapper {
 				.build();
 	}
 
-	static SitterInfoResponse toSitterInfoResponse(Sitter entity, User userEntity) {
+	static SitterInfoResponse toSitterInfoResponse(Sitter entity, User userEntity, double distance) {
 		return SitterInfoResponse.builder()
 				.userId(entity.getUserId().toString())
 				.sitterId(entity.getId().toString())
@@ -38,6 +38,7 @@ public interface SitterMapper {
 				.longitude(entity.getLongitude())
 				.yearOfExperience(entity.getYearOfExperience())
 				.description(entity.getDescription())
+				.distance(distance)
 				.build();
 	}
 

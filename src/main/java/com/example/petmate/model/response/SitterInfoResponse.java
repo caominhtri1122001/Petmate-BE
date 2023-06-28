@@ -24,4 +24,5 @@ public class SitterInfoResponse {
 	private double longitude;
 	private int yearOfExperience;
 	private String description;
+	private double distance;
 }

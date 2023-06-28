@@ -54,8 +54,8 @@ public class SitterController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "api to get sitter around user", content = {
 			@Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = SitterInfoResponse.class)) }) })
 	@GetMapping("/getSitter")
-	public ResponseEntity<List<SitterInfoResponse>> getSitterAround() throws ResponseException {
-		return ResponseEntity.ok(sitterService.getListSitter());
+	public ResponseEntity<List<SitterInfoResponse>> getSitterAround(double lat, double lng) throws ResponseException {
+		return ResponseEntity.ok(sitterService.getListSitter(lat,lng));
 	}
 
 	@Operation(summary = "api to get sitter by id")

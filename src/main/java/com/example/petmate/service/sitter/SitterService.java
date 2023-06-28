@@ -12,7 +12,7 @@ import java.util.List;
 public interface SitterService {
 	SitterResponse createSitter(SitterRequest request);
 
-	List<SitterInfoResponse> getListSitter();
+	List<SitterInfoResponse> getListSitter(double lat, double lng);
 
 	List<SitterInfoResponse> getListSitterRequest();
 

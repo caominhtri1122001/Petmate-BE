@@ -67,16 +67,31 @@ public class SitterServiceImpl implements SitterService {
 	}
 
 	@Override
-	public List<SitterInfoResponse> getListSitter() {
+	public List<SitterInfoResponse> getListSitter(double lat, double lng) {
 		List<SitterInfoResponse> result = new ArrayList<>();
 		List<Sitter> sitters = sitterRepository.findAll();
 		sitters.forEach(sitter -> {
 			Optional<User> user = userRepository.findById(sitter.getUserId());
 			if(user.get().getRole() == UserRole.EMPLOYEE) {
-				result.add(SitterMapper.toSitterInfoResponse(sitter, user.get()));
+				double distance = calculateDistance(lat,lng,sitter.getLatitude(),sitter.getLongitude());
+				if( distance < 20) {
+					result.add(SitterMapper.toSitterInfoResponse(sitter, user.get(), distance));
+				}
 			}
 		});
 		return result;
+	}
+
+	private double calculateDistance(double userLat, double userLng, double sitterLat, double sitterLng) {
+		final double earthRadius = 6371;
+		double dLat = Math.toRadians(sitterLat - userLat);
+		double dLng = Math.toRadians(sitterLng - userLng);
+		double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+				+ Math.cos(Math.toRadians(userLat)) * Math.cos(Math.toRadians(sitterLat))
+				* Math.sin(dLng / 2) * Math.sin(dLng / 2);
+		double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+		double distance = earthRadius * c;
+		return Double.parseDouble(String.format("%.2f", distance));
 	}
 
 	@Override
@@ -85,7 +100,7 @@ public class SitterServiceImpl implements SitterService {
 		List<Sitter> sitters = sitterRepository.findByStatus(false);
 		sitters.forEach(sitter -> {
 			Optional<User> user = userRepository.findById(sitter.getUserId());
-			result.add(SitterMapper.toSitterInfoResponse(sitter, user.get()));
+			result.add(SitterMapper.toSitterInfoResponse(sitter, user.get(), 0));
 		});
 		return result;
 	}
@@ -97,7 +112,7 @@ public class SitterServiceImpl implements SitterService {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
 		Optional<User> user = userRepository.findById(sitter.get().getUserId());
-		return SitterMapper.toSitterInfoResponse(sitter.get(), user.get());
+		return SitterMapper.toSitterInfoResponse(sitter.get(), user.get(), 0);
 	}
 
 	@Override
@@ -107,7 +122,7 @@ public class SitterServiceImpl implements SitterService {
 			throw new ResponseException(ResponseCodes.PM_NOT_FOUND);
 		}
 		Optional<User> user = userRepository.findById(sitter.get().getUserId());
-		return SitterMapper.toSitterInfoResponse(sitter.get(), user.get());
+		return SitterMapper.toSitterInfoResponse(sitter.get(), user.get(), 0);
 	}
 
 	@Override
