@@ -246,14 +246,9 @@ public class RequestServiceImpl implements RequestService {
 					existingRequest.getStartDate() + " " + existingRequest.getStartTime(), formatter);
 			LocalDateTime existingEndDateTime = LocalDateTime.parse(
 					existingRequest.getEndDate() + " " + existingRequest.getEndTime(), formatter);
-//			if ((startDateTime.isAfter(existingStartDateTime) && startDateTime.isBefore(existingEndDateTime)) || (
-//					endDateTime.isAfter(existingStartDateTime) && endDateTime.isBefore(existingEndDateTime)) || (
-//					startDateTime.isEqual(existingStartDateTime) && endDateTime.isEqual(existingEndDateTime))) {
-//				return true;
-//			}
 			if ((startDateTime.isAfter(existingStartDateTime) && startDateTime.isBefore(existingEndDateTime)) ||
 					(endDateTime.isAfter(existingStartDateTime) && endDateTime.isBefore(existingEndDateTime)) ||
-					(startDateTime.isEqual(existingStartDateTime) && endDateTime.isEqual(existingEndDateTime)) ||
+					(startDateTime.isEqual(existingStartDateTime) || endDateTime.isEqual(existingEndDateTime)) ||
 					(existingStartDateTime.isAfter(startDateTime) && existingStartDateTime.isBefore(endDateTime)) ||
 					(existingEndDateTime.isAfter(startDateTime) && existingEndDateTime.isBefore(endDateTime)) ||
 					(existingStartDateTime.isEqual(startDateTime) && existingEndDateTime.isEqual(endDateTime))) {
